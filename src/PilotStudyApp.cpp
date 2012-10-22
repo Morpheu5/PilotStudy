@@ -6,13 +6,15 @@
 
 #include "Cell.h"
 
+#define FPS 60
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class PilotStudyApp : public AppBasic {
 
-	std::vector<Cell> _cells;
+	std::list<Cell> _cells;
 
 public:
 	void setup();
@@ -23,30 +25,35 @@ public:
 
 void PilotStudyApp::setup() {
 	setWindowSize(600, 600);
-	setFrameRate(30);
+	setFrameRate(FPS);
 	//setFullScreen(true);
 	gl::enableAlphaBlending(true);
 
 	// SEED THE RANDOM
 
 	for(int i = 0; i < 10; i++) {
-		_cells.push_back(Cell((ci::Vec2f(25+ci::randFloat(getWindowWidth()-50), 25+ci::randFloat(getWindowHeight()-50)))));
+		ci::Vec2f p = ci::Vec2f(randFloat(getWindowWidth()), randFloat(getWindowHeight()));
+		Cell c(p);
+		c.id(i);
+		_cells.push_back(c);
 	}
 }
 
 void PilotStudyApp::mouseDown( MouseEvent event ) {
-	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
+	for(auto it = _cells.end(); it != _cells.begin(); --it) {
 		if(it->hit(event.getPos())) {
-			console() << "Hit!" << endl;
-		} else {
-			console() << "Miss" << endl;
+			Cell c(*it);
+			_cells.erase(it);
+			_cells.push_front(c);
+			console() << "Hit! (" << c.id() << ")" << endl;
+			break;
 		}
 	}
 }
 
 void PilotStudyApp::update() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->update();
+		//it->update();
 	}
 }
 

@@ -44,6 +44,6 @@ void Cell::draw() {
 	gl::draw(_texture, _position - _artwork->getSize()/2);
 }
 
-bool Cell::hit(ci::Vec2i& p) {
-	return p.distanceSquared(_position) < 50*50;
+bool Cell::hit(const ci::Vec2i& p) {
+	return p.distance(_position) < 50;
 }

@@ -6,6 +6,7 @@
 class Cell {
 
 	ci::Vec2f _position;
+	int _id;
 
 	ci::svg::DocRef _artwork;
 	ci::gl::Texture _texture;
@@ -18,9 +19,12 @@ public:
 	void update();
 	void draw();
 
-	bool hit(ci::Vec2i& p);
+	bool hit(const ci::Vec2i& p);
 
 	const ci::Vec2f& position() { return _position; }
 	void position(ci::Vec2f p) { _position = p; }
+
+	int id() { return _id; }
+	void id(int i) { _id = i; }
 };
 

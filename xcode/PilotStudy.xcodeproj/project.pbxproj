@@ -19,7 +19,7 @@
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A3D9B183162F1C780007DA9E /* TuneBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3D9B182162F1C780007DA9E /* TuneBlock.cpp */; };
+		A3EC9FAB1635BB0000171DD9 /* Cell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3EC9FAA1635BB0000171DD9 /* Cell.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,8 +41,8 @@
 		53E3CDFB0E86099300238D2B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* PilotStudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotStudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3D9B182162F1C780007DA9E /* TuneBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TuneBlock.cpp; path = ../src/TuneBlock.cpp; sourceTree = "<group>"; };
-		A3D9B185162F1C810007DA9E /* TuneBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TuneBlock.h; path = ../include/TuneBlock.h; sourceTree = "<group>"; };
+		A3EC9FA91635BAF300171DD9 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cell.h; path = ../include/Cell.h; sourceTree = "<group>"; };
+		A3EC9FAA1635BB0000171DD9 /* Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cell.cpp; path = ../src/Cell.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A3D9B182162F1C780007DA9E /* TuneBlock.cpp */,
+				A3EC9FAA1635BB0000171DD9 /* Cell.cpp */,
 				00BAE6590E7ED9C10018A608 /* PilotStudyApp.cpp */,
 			);
 			name = Source;
@@ -125,7 +125,7 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				A3D9B185162F1C810007DA9E /* TuneBlock.h */,
+				A3EC9FA91635BAF300171DD9 /* Cell.h */,
 				32CA4F630368D1EE00C91783 /* PilotStudy_Prefix.pch */,
 			);
 			name = Headers;
@@ -208,7 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00BAE65A0E7ED9C10018A608 /* PilotStudyApp.cpp in Sources */,
-				A3D9B183162F1C780007DA9E /* TuneBlock.cpp in Sources */,
+				A3EC9FAB1635BB0000171DD9 /* Cell.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
