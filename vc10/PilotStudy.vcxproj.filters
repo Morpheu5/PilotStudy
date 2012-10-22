@@ -18,7 +18,7 @@
     <ClCompile Include="..\src\PilotStudyApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TuneBlock.cpp">
+    <ClCompile Include="..\src\Cell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\TuneBlock.h">
+    <ClInclude Include="..\include\Cell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
