@@ -11,18 +11,12 @@
 using namespace ci;
 
 Cell::Cell(void) {
-	/*
-	_artwork = svg::Doc::create(app::getAssetPath("Cell.svg"));
-	Rectf rect = _artwork->getBoundingBox();
-	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
-	cairo::Context ctx(sImg);
-	ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
-	ctx.render(*_artwork);
-	_texture = sImg.getSurface();
-	*/
+
 }
 
-Cell::Cell(ci::Vec2f& p) : _position(p) {
+Cell::Cell(ci::Vec2f& p) {
+	_position = ci::Vec2f(p);
+	
 	_artwork = svg::Doc::create(app::getAssetPath("Cell.svg"));
 	Rectf rect = _artwork->getBoundingBox();
 	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
@@ -37,7 +31,7 @@ Cell::~Cell() {
 }
 
 void Cell::update() {
-	_position += ci::randVec2f();
+	//_position += ci::randVec2f();
 }
 
 void Cell::draw() {
@@ -45,5 +39,6 @@ void Cell::draw() {
 }
 
 bool Cell::hit(const ci::Vec2i& p) {
-	return p.distance(_position) < 50;
+	int r = (_artwork->getSize()).x/2;
+	return p.distance(_position) < r;
 }

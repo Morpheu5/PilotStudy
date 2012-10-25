@@ -40,11 +40,12 @@ void PilotStudyApp::setup() {
 }
 
 void PilotStudyApp::mouseDown( MouseEvent event ) {
-	for(auto it = _cells.end(); it != _cells.begin(); --it) {
+	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
 		if(it->hit(event.getPos())) {
-			Cell c(*it);
-			_cells.erase(it);
-			_cells.push_front(c);
+			Cell c = *it;
+			auto jt = (++it).base();
+			_cells.erase(jt);
+			_cells.push_back(c);
 			console() << "Hit! (" << c.id() << ")" << endl;
 			break;
 		}
@@ -53,7 +54,7 @@ void PilotStudyApp::mouseDown( MouseEvent event ) {
 
 void PilotStudyApp::update() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		//it->update();
+		it->update();
 	}
 }
 
