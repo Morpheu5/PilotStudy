@@ -79,6 +79,7 @@
 		A32237F2163AF5470066BF6E /* TuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TuioObject.h; sourceTree = "<group>"; };
 		A32237F3163AF5470066BF6E /* TuioProfileBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TuioProfileBase.h; sourceTree = "<group>"; };
 		A3223817163AF5470066BF6E /* TuioClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TuioClient.cpp; sourceTree = "<group>"; };
+		A3E38750163AFC98007639F8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../include/Common.h; sourceTree = "<group>"; };
 		A3EC9FA91635BAF300171DD9 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cell.h; path = ../include/Cell.h; sourceTree = "<group>"; };
 		A3EC9FAA1635BB0000171DD9 /* Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cell.cpp; path = ../src/Cell.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,6 +171,7 @@
 				A3223790163AF4C30066BF6E /* TouchPoint.h */,
 				A3EC9FA91635BAF300171DD9 /* Cell.h */,
 				32CA4F630368D1EE00C91783 /* PilotStudy_Prefix.pch */,
+				A3E38750163AFC98007639F8 /* Common.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";

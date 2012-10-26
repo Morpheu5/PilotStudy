@@ -8,6 +8,7 @@ class TouchPoint {
 
 	uint32_t _id;
 	PolyLine<Vec2f> _path;
+	Vec2f _position;
 
 public:
 	TouchPoint();
@@ -22,5 +23,7 @@ public:
 	void id(int i) { _id = i; }
 	
 	const PolyLine<Vec2f>& path() const { return _path; }
+
+	const Vec2f& position() const { return _position; }
 };
 

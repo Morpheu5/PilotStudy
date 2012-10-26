@@ -7,6 +7,8 @@
 #include "TuioCursor.h"
 #include "OscMessage.h"
 
+#include "Common.h"
+
 #include "TouchPoint.h"
 #include "CellController.h"
 
@@ -19,7 +21,7 @@ class PilotStudyApp : public AppBasic {
 
 	CellController _cellController;
 	tuio::Client _tuioClient;
-	std::map<uint32_t, TouchPoint> _activePoints;
+	TouchMap _activePoints;
 
 public:
 	void prepareSettings(Settings* settings);
@@ -28,6 +30,7 @@ public:
 	void mouseDown(MouseEvent event);
 	void mouseDrag(MouseEvent event);
 	void mouseUp(MouseEvent event);
+	
 	void touchesBegan(TouchEvent event);
 	void touchesMoved(TouchEvent event);
 	void touchesEnded(TouchEvent event);
@@ -81,32 +84,42 @@ void PilotStudyApp::mouseUp(MouseEvent event) {
 }
 
 void PilotStudyApp::touchesBegan(TouchEvent event) {
+	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		_activePoints.insert(std::make_pair(it->getId(), TouchPoint(it->getId(), it->getPos())));
+		_activePoints[it->getId()] = TouchPoint(it->getId(), it->getPos());
+		l.push_back(_activePoints[it->getId()]);
 	}
+	_cellController.addTouches(l);
 }
 
 void PilotStudyApp::touchesMoved(TouchEvent event) {
+	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
 		_activePoints[it->getId()].addPoint(it->getPos());
+		l.push_back(_activePoints[it->getId()]);
 	}
+	_cellController.updateTouches(l);
 }
 
 void PilotStudyApp::touchesEnded(TouchEvent event) {
+	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
+		l.push_back(_activePoints[it->getId()]);
 		_activePoints.erase(it->getId());
 	}
+	_cellController.removeTouches(l);
 }
 
 void PilotStudyApp::update() {
 	_cellController.update();
-	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
-		console() << it->first << " :: " << it->second.path().getPoints().back() << std::endl;
-	}
 }
 
 void PilotStudyApp::draw() {
 	gl::clear(Color(0, 0, 0));
+
+	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
+		gl::drawSolidCircle(it->second.position(), 15);
+	}
 
 	_cellController.draw();
 }

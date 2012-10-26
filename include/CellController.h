@@ -1,11 +1,12 @@
 #pragma once
-#include "Cell.h"
 
-#include <list>
+#include "Common.h"
+#include "Cell.h"
 
 class CellController {
 
 	std::list<Cell> _cells;
+	TouchMap _activeTouches;
 
 public:
 	CellController();
@@ -13,6 +14,9 @@ public:
 
 	void init();
 
+	void addTouches(std::list<TouchPoint>& m);
+	void updateTouches(std::list<TouchPoint>& m);
+	void removeTouches(std::list<TouchPoint>& m);
 	void update();
 	void draw();
 };
