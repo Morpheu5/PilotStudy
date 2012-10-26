@@ -21,10 +21,12 @@ public:
 
 	bool hit(const ci::Vec2i& p);
 
-	const ci::Vec2f& position() { return _position; }
+	/*** ACCESSORS ***/
+
+	const ci::Vec2f& position() const { return _position; }
 	void position(ci::Vec2f p) { _position = p; }
 
-	int id() { return _id; }
+	const int id() const { return _id; }
 	void id(int i) { _id = i; }
 };
 

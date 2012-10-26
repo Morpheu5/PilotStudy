@@ -11,6 +11,8 @@ public:
 	CellController();
 	virtual ~CellController();
 
+	void init();
+
 	void update();
 	void draw();
 };
