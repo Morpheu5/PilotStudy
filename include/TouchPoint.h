@@ -1,6 +1,6 @@
 #pragma once
-#include <cinder/Vector.h>
-#include <cinder/PolyLine.h>
+#include "cinder/Vector.h"
+#include "cinder/PolyLine.h"
 
 using namespace ci;
 
