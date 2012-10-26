@@ -105,10 +105,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\CellController.cpp" />
     <ClCompile Include="..\src\PilotStudyApp.cpp" />
     <ClCompile Include="..\src\Cell.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\CellController.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\Cell.h" />
   </ItemGroup>

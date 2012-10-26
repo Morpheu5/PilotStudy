@@ -4,21 +4,21 @@
 #include "cinder/Rand.h"
 #include <ctime>
 
-#include "Cell.h"
+#include "CellController.h"
 
 #define FPS 60
 
 using namespace ci;
 using namespace ci::app;
-using namespace std;
 
 class PilotStudyApp : public AppBasic {
 
-	std::list<Cell> _cells;
+	CellController _cellController;
 
 public:
 	void setup();
-	void mouseDown( MouseEvent event );	
+	void mouseDown(MouseEvent event);
+	void mouseDrag(MouseEvent event);
 	void update();
 	void draw();
 };
@@ -28,19 +28,10 @@ void PilotStudyApp::setup() {
 	setFrameRate(FPS);
 	//setFullScreen(true);
 	gl::enableAlphaBlending(true);
-
-	// SEED THE RANDOM
-
-	for(int i = 0; i < 10; i++) {
-		ci::Vec2f p = ci::Vec2f(randFloat(getWindowWidth()), randFloat(getWindowHeight()));
-		Cell c(p);
-		c.id(i);
-		_cells.push_back(c);
-	}
 }
 
-void PilotStudyApp::mouseDown( MouseEvent event ) {
-	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
+void PilotStudyApp::mouseDown(MouseEvent event) {
+/*	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
 		if(it->hit(event.getPos())) {
 			Cell c = *it;
 			auto jt = (++it).base();
@@ -49,21 +40,26 @@ void PilotStudyApp::mouseDown( MouseEvent event ) {
 			console() << "Hit! (" << c.id() << ")" << endl;
 			break;
 		}
-	}
+	} */
+}
+
+void PilotStudyApp::mouseDrag(MouseEvent event) {
+/*	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
+		if(it->hit(event.getPos())) {
+			it->position(event.getPos());
+			break;
+		}
+	} */
 }
 
 void PilotStudyApp::update() {
-	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->update();
-	}
+	_cellController.update();
 }
 
 void PilotStudyApp::draw() {
 	gl::clear(Color(0, 0, 0));
 
-	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->draw();
-	}
+	_cellController.draw();
 }
 
 CINDER_APP_BASIC( PilotStudyApp, RendererGl )
