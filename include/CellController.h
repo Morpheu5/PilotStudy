@@ -5,8 +5,9 @@
 
 class CellController {
 
-	std::list<Cell> _cells;
+	std::map<int, Cell> _cells;
 	TouchMap _activeTouches;
+	std::map<int, int> _touchedCells;
 
 public:
 	CellController();

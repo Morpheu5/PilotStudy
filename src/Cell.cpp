@@ -38,7 +38,11 @@ void Cell::draw() {
 	gl::draw(_texture, _position - _artwork->getSize()/2);
 }
 
-bool Cell::hit(const ci::Vec2i& p) {
+bool Cell::hit(const ci::Vec2f& p) {
 	int r = (_artwork->getSize()).x/2;
 	return p.distance(_position) < r;
+}
+
+void Cell::moveBy(const ci::Vec2f& p) {
+	_position += p;
 }

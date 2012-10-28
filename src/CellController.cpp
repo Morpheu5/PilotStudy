@@ -19,15 +19,16 @@ void CellController::init() {
 		ci::Vec2f p = Vec2f(randFloat(app::getWindowWidth()), randFloat(app::getWindowHeight()));
 		Cell c(p);
 		c.id(i);
-		_cells.push_back(c);
+		_cells[i] = c;
 	}
 }
 
 void CellController::addTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
 		for(auto cellIt = _cells.begin(); cellIt != _cells.end(); ++cellIt) {
-			if(cellIt->hit(touchIt->position())) {
+			if(cellIt->second.hit(touchIt->position())) {
 				_activeTouches[touchIt->id()] = TouchPoint(*touchIt);
+				_touchedCells[touchIt->id()] = cellIt->second.id();
 			}
 		}
 	}
@@ -37,6 +38,9 @@ void CellController::updateTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
 		if(_activeTouches.find(touchIt->id()) != _activeTouches.end()) {
 			_activeTouches[touchIt->id()].addPoint(touchIt->position());
+			ci::Vec2f v = touchIt->lastMovement();
+			int cid = _touchedCells[touchIt->id()];
+			_cells[cid].moveBy(v);
 		}
 	}
 }
@@ -44,20 +48,30 @@ void CellController::updateTouches(std::list<TouchPoint>& l) {
 void CellController::removeTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
 		_activeTouches.erase(touchIt->id());
+		_touchedCells.erase(touchIt->id());
 	}
 }
 
 void CellController::update() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->update();
-		for(auto touchIt = _activeTouches.begin(); touchIt != _activeTouches.end(); ++touchIt) {
-			app::console() << touchIt->second.id() << std::endl;
+		/*
+		auto jt = it;
+		for(++jt; jt != _cells.end(); ++jt) {
+			ci::Vec2f direction = it->second.position() - jt->second.position();
+			float distance = direction.length();
+			if(distance < 75.0f) {
+				float F = 10.0f / distance;
+				direction.normalize();
+				it->second.moveBy(F*direction);
+				jt->second.moveBy(-F*direction);
+			}
 		}
+		*/
 	}
 }
 
 void CellController::draw() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->draw();
+		it->second.draw();
 	}
 }

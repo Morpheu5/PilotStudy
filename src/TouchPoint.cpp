@@ -16,3 +16,8 @@ void TouchPoint::addPoint(const Vec2f& p) {
 	_position = p;
 	_path.push_back(p);
 }
+
+const ci::Vec2f TouchPoint::lastMovement() {
+	ci::Vec2f v = _position - *(_path.end()-2);
+	return v;
+}

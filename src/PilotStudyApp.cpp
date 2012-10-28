@@ -44,6 +44,8 @@ void PilotStudyApp::prepareSettings(Settings* settings) {
 }
 
 void PilotStudyApp::setup() {
+	Rand::randomize();
+
 	setWindowSize(600, 600);
 	setFrameRate(FPS);
 	//setFullScreen(true);
@@ -56,31 +58,24 @@ void PilotStudyApp::setup() {
 }
 
 void PilotStudyApp::mouseDown(MouseEvent event) {
-/*	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
-		if(it->hit(event.getPos())) {
-			Cell c = *it;
-			auto jt = (++it).base();
-			_cells.erase(jt);
-			_cells.push_back(c);
-			console() << "Hit! (" << c.id() << ")" << endl;
-			break;
-		}
-	} */
-	_activePoints.insert(std::make_pair(0, TouchPoint(0, event.getPos())));
+	_activePoints[0] = TouchPoint(0, event.getPos());
+	std::list<TouchPoint> l;
+	l.push_back(_activePoints[0]);
+	_cellController.addTouches(l);
 }
 
 void PilotStudyApp::mouseDrag(MouseEvent event) {
-/*	for(auto it = _cells.rbegin(); it != _cells.rend(); ++it) {
-		if(it->hit(event.getPos())) {
-			it->position(event.getPos());
-			break;
-		}
-	} */
 	_activePoints[0].addPoint(event.getPos());
+	std::list<TouchPoint> l;
+	l.push_back(_activePoints[0]);
+	_cellController.updateTouches(l);
 }
 
 void PilotStudyApp::mouseUp(MouseEvent event) {
+	std::list<TouchPoint> l;
+	l.push_back(_activePoints[0]);
 	_activePoints.erase(0);
+	_cellController.removeTouches(l);
 }
 
 void PilotStudyApp::touchesBegan(TouchEvent event) {

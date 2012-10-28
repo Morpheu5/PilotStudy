@@ -16,6 +16,7 @@ public:
 	virtual ~TouchPoint();
 
 	void addPoint(const Vec2f& p);
+	const ci::Vec2f lastMovement();
 	
 	/*** ACCESSORS ***/
 
