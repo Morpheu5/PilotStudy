@@ -63,6 +63,9 @@
     <ClCompile Include="..\..\cinder_0.8.4_vc2010\blocks\osc\src\OscSender.cpp">
       <Filter>Blocks\osc\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Score.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="..\..\cinder_0.8.4_vc2010\blocks\osc\include\OscSender.h">
       <Filter>Blocks\osc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Score.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

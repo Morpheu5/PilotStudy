@@ -18,6 +18,7 @@ public:
 	void addTouches(std::list<TouchPoint>& m);
 	void updateTouches(std::list<TouchPoint>& m);
 	void removeTouches(std::list<TouchPoint>& m);
+
 	void update();
 	void draw();
 };

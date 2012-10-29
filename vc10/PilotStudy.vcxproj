@@ -113,6 +113,7 @@
     <ClCompile Include="..\src\CellController.cpp" />
     <ClCompile Include="..\src\PilotStudyApp.cpp" />
     <ClCompile Include="..\src\Cell.cpp" />
+    <ClCompile Include="..\src\Score.cpp" />
     <ClCompile Include="..\src\TouchPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +129,7 @@
     <ClInclude Include="..\include\CellController.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\Cell.h" />
+    <ClInclude Include="..\include\Score.h" />
     <ClInclude Include="..\include\TouchPoint.h" />
   </ItemGroup>
   <ItemGroup>

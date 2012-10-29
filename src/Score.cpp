@@ -6,18 +6,20 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/Rand.h"
 
-#include "Cell.h"
+#include "Score.h"
 
 using namespace ci;
 
-Cell::Cell(void) {
-
+Score::Score() {
+	
 }
 
-Cell::Cell(ci::Vec2f& p) {
-	_position = ci::Vec2f(p);
-	
-	_artwork = svg::Doc::create(app::getAssetPath("Cell.svg"));
+Score::~Score() {
+	_artwork.reset();
+}
+
+void Score::init() {
+	_artwork = svg::Doc::create(app::getAssetPath("flower.svg"));
 	Rectf rect = _artwork->getBoundingBox();
 	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
 	cairo::Context ctx(sImg);
@@ -26,23 +28,10 @@ Cell::Cell(ci::Vec2f& p) {
 	_texture = sImg.getSurface();
 }
 
-Cell::~Cell() {
-	_artwork.reset();
-}
-
-void Cell::update() {
+void Score::update() {
 
 }
 
-void Cell::draw() {
+void Score::draw() {
 	gl::draw(_texture, _position - _artwork->getSize()/2);
-}
-
-bool Cell::hit(const ci::Vec2f& p) {
-	int r = (_artwork->getSize()).x/2;
-	return p.distance(_position) < r;
-}
-
-void Cell::moveBy(const ci::Vec2f& p) {
-	_position += p;
 }

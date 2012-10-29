@@ -11,6 +11,7 @@
 
 #include "TouchPoint.h"
 #include "CellController.h"
+#include "Score.h"
 
 #define FPS 60
 
@@ -20,6 +21,8 @@ using namespace ci::app;
 class PilotStudyApp : public AppBasic {
 
 	CellController _cellController;
+	Score _score;
+
 	tuio::Client _tuioClient;
 	TouchMap _activePoints;
 
@@ -27,10 +30,12 @@ public:
 	void prepareSettings(Settings* settings);
 	void setup();
 
+	void keyDown(KeyEvent event);
+	
 	void mouseDown(MouseEvent event);
 	void mouseDrag(MouseEvent event);
 	void mouseUp(MouseEvent event);
-	
+
 	void touchesBegan(TouchEvent event);
 	void touchesMoved(TouchEvent event);
 	void touchesEnded(TouchEvent event);
@@ -45,16 +50,28 @@ void PilotStudyApp::prepareSettings(Settings* settings) {
 
 void PilotStudyApp::setup() {
 	Rand::randomize();
-
-	setWindowSize(600, 600);
 	setFrameRate(FPS);
-	//setFullScreen(true);
+	setFullScreen(true);
 	gl::enableAlphaBlending(true);
 
 	_tuioClient.registerTouches(this);
 	_tuioClient.connect(); // defaults to UDP 3333
 
 	_cellController.init();
+	_score.init();
+	_score.position(getWindowSize()/2);
+}
+
+void PilotStudyApp::keyDown(KeyEvent event) {
+	switch(event.getChar()) {
+	case 'f':
+		setFullScreen(!isFullScreen());
+		gl::enableAlphaBlending(true);
+		break;
+	case 'q':
+		exit(0);
+		break;
+	}
 }
 
 void PilotStudyApp::mouseDown(MouseEvent event) {
@@ -112,11 +129,12 @@ void PilotStudyApp::update() {
 void PilotStudyApp::draw() {
 	gl::clear(Color(0, 0, 0));
 
-	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
-		gl::drawSolidCircle(it->second.position(), 15);
-	}
-
+	_score.draw();
 	_cellController.draw();
+
+	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
+		gl::drawSolidCircle(it->second.position(), 10);
+	}
 }
 
 CINDER_APP_BASIC( PilotStudyApp, RendererGl )
