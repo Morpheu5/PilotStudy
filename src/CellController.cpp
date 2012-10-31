@@ -28,8 +28,10 @@ void CellController::addTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
 		for(auto cellIt = _cells.begin(); cellIt != _cells.end(); ++cellIt) {
 			if(cellIt->second.hit(touchIt->position())) {
-				_activeTouches[touchIt->id()] = TouchPoint(*touchIt);
-				_touchedCells[touchIt->id()] = cellIt->second.id();
+				int tid = touchIt->id();
+
+				_activeTouches[tid] = TouchPoint(*touchIt);
+				_touchedCells[tid] = cellIt->second.id();
 			}
 		}
 	}
@@ -38,36 +40,28 @@ void CellController::addTouches(std::list<TouchPoint>& l) {
 void CellController::updateTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
 		if(_activeTouches.find(touchIt->id()) != _activeTouches.end()) {
-			_activeTouches[touchIt->id()].addPoint(touchIt->position());
-			ci::Vec2f v = touchIt->lastMovement();
-			int cid = _touchedCells[touchIt->id()];
-			_cells[cid].moveBy(v);
+			int tid = touchIt->id();
+			int cid = _touchedCells[tid];
+			ci::Vec2f lastMovement = touchIt->lastMovement();
+			ci::Vec2f position = touchIt->position();
+
+			_activeTouches[tid].addPoint(position);
+			_cells[cid].moveBy(lastMovement);
 		}
 	}
 }
 
 void CellController::removeTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
-		_activeTouches.erase(touchIt->id());
-		_touchedCells.erase(touchIt->id());
+		int tid = touchIt->id();
+		_activeTouches.erase(tid);
+		_touchedCells.erase(tid);
 	}
 }
 
 void CellController::update() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		/*
-		auto jt = it;
-		for(++jt; jt != _cells.end(); ++jt) {
-			ci::Vec2f direction = it->second.position() - jt->second.position();
-			float distance = direction.length();
-			if(distance < 75.0f) {
-				float F = 10.0f / distance;
-				direction.normalize();
-				it->second.moveBy(F*direction);
-				jt->second.moveBy(-F*direction);
-			}
-		}
-		*/
+		it->second.update();
 	}
 }
 

@@ -21,4 +21,8 @@ public:
 
 	void update();
 	void draw();
+
+	/*** ACCESSORS ***/
+
+	std::map<int, Cell> cells() const { return _cells; }
 };

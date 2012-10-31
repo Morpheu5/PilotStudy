@@ -35,6 +35,7 @@ public:
 	void mouseDown(MouseEvent event);
 	void mouseDrag(MouseEvent event);
 	void mouseUp(MouseEvent event);
+	void mouseMove(MouseEvent event);
 
 	void touchesBegan(TouchEvent event);
 	void touchesMoved(TouchEvent event);
@@ -51,8 +52,9 @@ void PilotStudyApp::prepareSettings(Settings* settings) {
 void PilotStudyApp::setup() {
 	Rand::randomize();
 	setFrameRate(FPS);
-	setFullScreen(true);
+	//setFullScreen(true);
 	gl::enableAlphaBlending(true);
+	gl::enable(GL_TEXTURE_2D);
 
 	_tuioClient.registerTouches(this);
 	_tuioClient.connect(); // defaults to UDP 3333
@@ -60,6 +62,8 @@ void PilotStudyApp::setup() {
 	_cellController.init();
 	_score.init();
 	_score.position(getWindowSize()/2);
+
+	
 }
 
 void PilotStudyApp::keyDown(KeyEvent event) {
@@ -67,6 +71,7 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 	case 'f':
 		setFullScreen(!isFullScreen());
 		gl::enableAlphaBlending(true);
+		_score.position(getWindowSize()/2);
 		break;
 	case 'q':
 		exit(0);
@@ -95,11 +100,18 @@ void PilotStudyApp::mouseUp(MouseEvent event) {
 	_cellController.removeTouches(l);
 }
 
+void PilotStudyApp::mouseMove(MouseEvent event) {
+
+}
+
 void PilotStudyApp::touchesBegan(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		_activePoints[it->getId()] = TouchPoint(it->getId(), it->getPos());
-		l.push_back(_activePoints[it->getId()]);
+		int tid = it->getId();
+		Vec2f position = it->getPos();
+
+		_activePoints[tid] = TouchPoint(tid, position);
+		l.push_back(_activePoints[tid]);
 	}
 	_cellController.addTouches(l);
 }
@@ -107,8 +119,11 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 void PilotStudyApp::touchesMoved(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		_activePoints[it->getId()].addPoint(it->getPos());
-		l.push_back(_activePoints[it->getId()]);
+		int tid = it->getId();
+		Vec2f position = it->getPos();
+
+		_activePoints[tid].addPoint(position);
+		l.push_back(_activePoints[tid]);
 	}
 	_cellController.updateTouches(l);
 }
@@ -116,14 +131,19 @@ void PilotStudyApp::touchesMoved(TouchEvent event) {
 void PilotStudyApp::touchesEnded(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		l.push_back(_activePoints[it->getId()]);
-		_activePoints.erase(it->getId());
+		int tid = it->getId();
+
+		l.push_back(_activePoints[tid]);
+		_activePoints.erase(tid);
 	}
 	_cellController.removeTouches(l);
 }
 
 void PilotStudyApp::update() {
 	_cellController.update();
+
+	_score.cells(_cellController.cells());
+	_score.update();
 }
 
 void PilotStudyApp::draw() {
