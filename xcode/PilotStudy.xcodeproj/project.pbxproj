@@ -27,6 +27,7 @@
 		A32237E7163AF52F0066BF6E /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A32237D3163AF52F0066BF6E /* OscSender.cpp */; };
 		A3223826163AF5470066BF6E /* TuioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3223817163AF5470066BF6E /* TuioClient.cpp */; };
 		A3EC9FAB1635BB0000171DD9 /* Cell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3EC9FAA1635BB0000171DD9 /* Cell.cpp */; };
+		A3FDCB7116419B590028D9AE /* Score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3FDCB7016419B590028D9AE /* Score.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,8 @@
 		A3E38750163AFC98007639F8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../include/Common.h; sourceTree = "<group>"; };
 		A3EC9FA91635BAF300171DD9 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cell.h; path = ../include/Cell.h; sourceTree = "<group>"; };
 		A3EC9FAA1635BB0000171DD9 /* Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cell.cpp; path = ../src/Cell.cpp; sourceTree = "<group>"; };
+		A3FDCB6F16419B520028D9AE /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Score.h; path = ../include/Score.h; sourceTree = "<group>"; };
+		A3FDCB7016419B590028D9AE /* Score.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Score.cpp; path = ../src/Score.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +111,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A3FDCB7016419B590028D9AE /* Score.cpp */,
 				A3223792163AF4D70066BF6E /* CellController.cpp */,
 				A3223793163AF4D70066BF6E /* TouchPoint.cpp */,
 				A3EC9FAA1635BB0000171DD9 /* Cell.cpp */,
@@ -167,6 +171,7 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				A3FDCB6F16419B520028D9AE /* Score.h */,
 				A322378E163AF4C30066BF6E /* CellController.h */,
 				A3223790163AF4C30066BF6E /* TouchPoint.h */,
 				A3EC9FA91635BAF300171DD9 /* Cell.h */,
@@ -364,6 +369,7 @@
 				A32237E6163AF52F0066BF6E /* OscMessage.cpp in Sources */,
 				A32237E7163AF52F0066BF6E /* OscSender.cpp in Sources */,
 				A3223826163AF5470066BF6E /* TuioClient.cpp in Sources */,
+				A3FDCB7116419B590028D9AE /* Score.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +452,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/tuio/include\" \"$(CINDER_PATH)/blocks/osc/include\"";
 			};
@@ -461,7 +467,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/tuio/include\" \"$(CINDER_PATH)/blocks/osc/include\"";
 			};

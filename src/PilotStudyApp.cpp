@@ -53,6 +53,7 @@ void PilotStudyApp::setup() {
 	Rand::randomize();
 	setFrameRate(FPS);
 	//setFullScreen(true);
+	setWindowSize(800, 800);
 	gl::enableAlphaBlending(true);
 	gl::enable(GL_TEXTURE_2D);
 
@@ -62,8 +63,6 @@ void PilotStudyApp::setup() {
 	_cellController.init();
 	_score.init();
 	_score.position(getWindowSize()/2);
-
-	
 }
 
 void PilotStudyApp::keyDown(KeyEvent event) {

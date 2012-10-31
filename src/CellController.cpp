@@ -8,11 +8,11 @@
 using namespace ci;
 
 CellController::CellController() {
-
+	
 }
 
 CellController::~CellController() {
-
+	
 }
 
 void CellController::init() {
