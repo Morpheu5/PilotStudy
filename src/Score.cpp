@@ -24,21 +24,35 @@ void Score::init() {
 }
 
 void Score::update() {
-	_activeNodes.clear();
 	auto children = _artwork->getChildren();
-	for(auto cellsIt = _cells.begin(); cellsIt != _cells.end(); ++cellsIt) {
-		for(auto childrenIt = children.begin(); childrenIt != children.end(); ++childrenIt) {
-			svg::Node *n = *childrenIt;
-			Vec2f p = cellsIt->second.position() - (app::getWindowSize() - _artwork->getSize())/2;
-			if(n->containsPoint(p)) {
-				_activeNodes.push_back(n);
+	svg::Paint normalPaint(ColorA8u(100, 100, 100));
+	svg::Paint highlightPaint(ColorA8u(255, 255, 255));
+	svg::Style s;
+	s.setFill(normalPaint);
+	for(auto it = children.begin(); it != children.end(); ++it) {
+		svg::Node *n = *it;
+		n->setStyle(s);
+	}
+
+	s.setFill(highlightPaint);
+	for(int m = 0; m < 8; m++) {
+		for(int r = 0; r < 4; r++) {
+			std::stringstream sstr;
+			sstr << "m" << r << m;
+			std::string id = sstr.str();
+			svg::Node* n = const_cast<svg::Node*>(_artwork->findNode(id));
+
+			for(auto cIt = _cells.begin(); cIt != _cells.end(); ++cIt) {
+				Vec2f p = cIt->second.position() - (app::getWindowSize() - _artwork->getSize())/2;
+				if(n->containsPoint(p)) {
+					n->setStyle(s);
+				}
 			}
 		}
 	}
 }
 
 void Score::draw() {
-	/* TODO try editing the styles with const_cast<>...
 	 Rectf rect = _artwork->getBoundingBox();
 	 cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
 	 cairo::Context ctx(sImg);
@@ -47,39 +61,4 @@ void Score::draw() {
 	 _texture = sImg.getSurface();
 	 _texture.enableAndBind();
 	 gl::draw(_texture, _position - _artwork->getSize()/2);
-	/**/
-
-	for(auto nIt = _artwork->getChildren().begin(); nIt != _artwork->getChildren().end(); ++nIt) {
-		svg::Node* n = *nIt;
-		svg::Paint p(ColorA8u(100.0, 100.0, 100.0));
-		svg::Style s;
-		s.setFill(p);
-		n->setStyle(s);
-
-		Rectf nRect = _artwork->getBoundingBox();
-		cairo::SurfaceImage nImg(nRect.getWidth(), nRect.getHeight(), true);
-		cairo::Context nCtx(nImg);
-		nCtx.scale(nRect.getWidth() / _artwork->getWidth(), nRect.getHeight() / _artwork->getHeight());
-		nCtx.render(*n);
-		ci::gl::Texture nTx = nImg.getSurface();
-		//nTx.enableAndBind();
-		gl::draw(nTx, _position - _artwork->getSize()/2);
-	}
-
-	for(auto nIt = _activeNodes.begin(); nIt != _activeNodes.end(); ++nIt) {
-		svg::Node* n = *nIt;
-		svg::Paint p(ColorA8u(255.0, 255.0, 255.0));
-		svg::Style s;
-		s.setFill(p);
-		n->setStyle(s);
-		
-		Rectf nRect = _artwork->getBoundingBox();
-		cairo::SurfaceImage nImg(nRect.getWidth(), nRect.getHeight(), true);
-		cairo::Context nCtx(nImg);
-		nCtx.scale(nRect.getWidth() / _artwork->getWidth(), nRect.getHeight() / _artwork->getHeight());
-		nCtx.render(*n);
-		ci::gl::Texture nTx = nImg.getSurface();
-		//nTx.enableAndBind();
-		gl::draw(nTx, _position - _artwork->getSize()/2);
-	}
 }

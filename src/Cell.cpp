@@ -24,6 +24,7 @@ Cell::Cell(ci::Vec2f& p) {
 	ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
 	ctx.render(*_artwork);
 	_texture = sImg.getSurface();
+	_texture.enableAndBind();
 }
 
 Cell::~Cell() {
