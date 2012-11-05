@@ -5,7 +5,8 @@
 
 #include "TuioClient.h"
 #include "TuioCursor.h"
-#include "OscMessage.h"
+//#include "OscMessage.h"
+#include "OscSender.h"
 
 #include "Common.h"
 
@@ -25,6 +26,12 @@ class PilotStudyApp : public AppBasic {
 
 	tuio::Client _tuioClient;
 	TouchMap _activePoints;
+
+	int _currentBar;
+
+	std::string _hostname;
+	int _port;
+	osc::Sender _sender;
 
 public:
 	void prepareSettings(Settings* settings);
@@ -60,7 +67,12 @@ void PilotStudyApp::setup() {
 	_tuioClient.registerTouches(this);
 	_tuioClient.connect(); // defaults to UDP 3333
 
+	_hostname = "localhost";
+	_port = 3000;
+	_sender.setup(_hostname, _port);
+
 	_cellController.init();
+	_currentBar = 0;
 	_score.init();
 	_score.position(getWindowSize()/2);
 }
@@ -69,6 +81,7 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 	switch(event.getChar()) {
 	case 'f':
 		setFullScreen(!isFullScreen());
+	case 'c':
 		gl::enableAlphaBlending(true);
 		_score.position(getWindowSize()/2);
 		break;
@@ -143,6 +156,14 @@ void PilotStudyApp::update() {
 
 	_score.cells(_cellController.cells());
 	_score.update();
+
+	std::list<int> playingCells = _score.cellsInBar(_currentBar);
+	_currentBar = (_currentBar+1)%8;
+
+	osc::Message m;
+	m.addStringArg("Hello!");
+	m.setRemoteEndpoint(_hostname, _port);
+	_sender.sendMessage(m);
 }
 
 void PilotStudyApp::draw() {

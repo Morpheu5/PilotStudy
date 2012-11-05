@@ -23,6 +23,18 @@ void Score::init() {
 	_artwork = svg::Doc::create(app::getAssetPath("flower.svg"));
 }
 
+std::list<int> Score::cellsInBar(int bar) {
+	std::list<int> cells;
+	for(int track = 0; track < 4; track++) {
+		std::pair<int, int> nId(track, bar);
+		int cId = _activeCells[nId];
+		if(cId != 0) {
+			cells.push_back(_activeCells[nId]);
+		}
+	}
+	return cells;
+}
+
 void Score::update() {
 	auto children = _artwork->getChildren();
 	svg::Paint normalPaint(ColorA8u(100, 100, 100));
@@ -33,12 +45,13 @@ void Score::update() {
 		svg::Node *n = *it;
 		n->setStyle(s);
 	}
+	_activeCells.clear();
 
 	s.setFill(highlightPaint);
-	for(int m = 0; m < 8; m++) {
-		for(int r = 0; r < 4; r++) {
+	for(int bar = 0; bar < 8; bar++) {
+		for(int track = 0; track < 4; track++) {
 			std::stringstream sstr;
-			sstr << "m" << r << m;
+			sstr << "m" << track << bar;
 			std::string id = sstr.str();
 			svg::Node* n = const_cast<svg::Node*>(_artwork->findNode(id));
 
@@ -46,6 +59,11 @@ void Score::update() {
 				Vec2f p = cIt->second.position() - (app::getWindowSize() - _artwork->getSize())/2;
 				if(n->containsPoint(p)) {
 					n->setStyle(s);
+					// set the cell as active
+					//if(cIt->first != 0) {
+						std::pair<int, int> nId(track, bar);
+						_activeCells[nId] = cIt->first;
+					//}
 				}
 			}
 		}

@@ -13,7 +13,8 @@ class Score {
 
 	ci::svg::DocRef _artwork;
 	ci::gl::Texture _texture;
-	std::list<ci::svg::Node*> _activeNodes;
+	//std::list<ci::svg::Node*> _activeNodes;
+	std::map<std::pair<int, int>, int> _activeCells;
 
 public:
 	Score();
@@ -22,6 +23,8 @@ public:
 	void init();
 	void update();
 	void draw();
+
+	std::list<int> cellsInBar(int bar);
 
 	/*** ACCESSORS ***/
 

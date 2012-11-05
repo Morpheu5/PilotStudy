@@ -16,7 +16,7 @@ CellController::~CellController() {
 }
 
 void CellController::init() {
-	for(int i = 0; i < 10; i++) {
+	for(int i = 1; i <= 10; i++) {
 		ci::Vec2f p = Vec2f(randFloat(app::getWindowWidth()), randFloat(app::getWindowHeight()));
 		Cell c(p);
 		c.id(i);
