@@ -50,12 +50,15 @@
       <AdditionalIncludeDirectories>..\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\boost;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\blocks\osc\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\blocks\tuio\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -74,7 +77,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\blocks\tuio\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\blocks\osc\include;..\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\include;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\boost</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -90,7 +93,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;osc.lib;cairo-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\lib;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\blocks\osc\lib\vc10;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\lib;C:\Users\af6539\Documents\src\cinder_0.8.4_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -101,7 +104,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <IgnoreSpecificDefaultLibraries>LIBCPMT</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

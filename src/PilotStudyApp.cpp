@@ -2,10 +2,10 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
+#include "cinder/Timeline.h"
 
 #include "TuioClient.h"
 #include "TuioCursor.h"
-//#include "OscMessage.h"
 #include "OscSender.h"
 
 #include "Common.h"
@@ -14,7 +14,7 @@
 #include "CellController.h"
 #include "Score.h"
 
-#define FPS 60
+#define FPS 30
 
 using namespace ci;
 using namespace ci::app;
@@ -28,6 +28,7 @@ class PilotStudyApp : public AppBasic {
 	TouchMap _activePoints;
 
 	int _currentBar;
+	CueRef _cue;
 
 	std::string _hostname;
 	int _port;
@@ -47,6 +48,8 @@ public:
 	void touchesBegan(TouchEvent event);
 	void touchesMoved(TouchEvent event);
 	void touchesEnded(TouchEvent event);
+
+	void playTimerCallback();
 
 	void update();
 	void draw();
@@ -75,6 +78,11 @@ void PilotStudyApp::setup() {
 	_currentBar = 0;
 	_score.init();
 	_score.position(getWindowSize()/2);
+
+	_cue = timeline().add( std::bind(&PilotStudyApp::playTimerCallback, this), timeline().getCurrentTime() + 1 );
+	_cue->setDuration(1);
+	_cue->setAutoRemove(false);
+	_cue->setLoop(true);
 }
 
 void PilotStudyApp::keyDown(KeyEvent event) {
@@ -151,6 +159,10 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 	_cellController.removeTouches(l);
 }
 
+void PilotStudyApp::playTimerCallback() {
+	console() << getElapsedSeconds() << std::endl;
+}
+
 void PilotStudyApp::update() {
 	_cellController.update();
 
@@ -160,10 +172,13 @@ void PilotStudyApp::update() {
 	std::list<int> playingCells = _score.cellsInBar(_currentBar);
 	_currentBar = (_currentBar+1)%8;
 
+	/*
 	osc::Message m;
-	m.addStringArg("Hello!");
+	m.setAddress("/playmeasure");
+	m.addIntArg(0);
 	m.setRemoteEndpoint(_hostname, _port);
 	_sender.sendMessage(m);
+	*/
 }
 
 void PilotStudyApp::draw() {
