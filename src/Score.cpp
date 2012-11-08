@@ -12,7 +12,7 @@
 using namespace ci;
 
 Score::Score() {
-
+    _playingBar = 0;
 }
 
 Score::~Score() {
@@ -24,6 +24,7 @@ void Score::init() {
 }
 
 std::list<int> Score::cellsInBar(int bar) {
+    _playingBar = bar;
 	std::list<int> cells;
 	for(int track = 0; track < 4; track++) {
 		std::pair<int, int> nId(track, bar);
@@ -37,10 +38,14 @@ std::list<int> Score::cellsInBar(int bar) {
 
 void Score::update() {
 	auto children = _artwork->getChildren();
-	svg::Paint normalPaint(ColorA8u(100, 100, 100));
-	svg::Paint highlightPaint(ColorA8u(255, 255, 255));
-	svg::Style s;
+	svg::Paint normalPaint(ColorA8u(61, 76, 92));
+	svg::Paint highlightPaint(ColorA8u(133, 153, 173));
+    svg::Paint playingPaint(ColorA8u(82, 102, 122));
+    svg::Paint playingHighlightPaint(ColorA8u(188, 199, 210));
+	svg::Style s, p, hp;
+    p.setFill(playingPaint);
 	s.setFill(normalPaint);
+    hp.setFill(playingHighlightPaint);
 	for(auto it = children.begin(); it != children.end(); ++it) {
 		svg::Node *n = *it;
 		n->setStyle(s);
@@ -54,16 +59,21 @@ void Score::update() {
 			sstr << "m" << track << bar;
 			std::string id = sstr.str();
 			svg::Node* n = const_cast<svg::Node*>(_artwork->findNode(id));
+            
+            if(_playingBar == bar) {
+                n->setStyle(p);
+            }
 
 			for(auto cIt = _cells.begin(); cIt != _cells.end(); ++cIt) {
 				Vec2f p = cIt->second.position() - (app::getWindowSize() - _artwork->getSize())/2;
 				if(n->containsPoint(p)) {
-					n->setStyle(s);
-					// set the cell as active
-					//if(cIt->first != 0) {
-						std::pair<int, int> nId(track, bar);
-						_activeCells[nId] = cIt->first;
-					//}
+                    if(_playingBar == bar) {
+                        n->setStyle(hp);
+                    } else {
+                        n->setStyle(s);
+                    }
+                    std::pair<int, int> nId(track, bar);
+                    _activeCells[nId] = cIt->first;
 				}
 			}
 		}

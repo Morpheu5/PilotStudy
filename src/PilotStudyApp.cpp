@@ -14,7 +14,7 @@
 #include "CellController.h"
 #include "Score.h"
 
-#define FPS 30
+#define FPS 60
 
 using namespace ci;
 using namespace ci::app;
@@ -160,7 +160,9 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 }
 
 void PilotStudyApp::playTimerCallback() {
-	console() << getElapsedSeconds() << std::endl;
+	//console() << getElapsedSeconds() << std::endl;
+    _currentBar = (++_currentBar)%8;
+    _score.cellsInBar(_currentBar);
 }
 
 void PilotStudyApp::update() {
@@ -170,7 +172,7 @@ void PilotStudyApp::update() {
 	_score.update();
 
 	std::list<int> playingCells = _score.cellsInBar(_currentBar);
-	_currentBar = (_currentBar+1)%8;
+	//_currentBar = (_currentBar+1)%8;
 
 	/*
 	osc::Message m;
@@ -182,7 +184,7 @@ void PilotStudyApp::update() {
 }
 
 void PilotStudyApp::draw() {
-	gl::clear(Color(0, 0, 0));
+	gl::clear(ColorA8u(41, 51, 61));
 
 	_score.draw();
 	_cellController.draw();
