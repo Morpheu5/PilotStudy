@@ -1,0 +1,14 @@
+#N canvas 900 600 130 150 10;
+#X obj 10 10 inlet;
+#X msg 10 37 set \$1;
+#X obj 20 64 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 10 89 tabplay~ \$1;
+#X obj 10 116 outlet~;
+#X obj 73 116 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;

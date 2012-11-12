@@ -3,10 +3,12 @@
 #include "cinder/Vector.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
+#include "cinder/Xml.h"
 
 #include "TuioClient.h"
 #include "TuioCursor.h"
 #include "OscSender.h"
+#include "OscListener.h"
 
 #include "Common.h"
 
@@ -15,6 +17,7 @@
 #include "Score.h"
 
 #define FPS 60
+#define LOOPS_LENGTH 2
 
 using namespace ci;
 using namespace ci::app;
@@ -33,6 +36,7 @@ class PilotStudyApp : public AppBasic {
 	std::string _hostname;
 	int _port;
 	osc::Sender _sender;
+	osc::Listener _listener;
 
 public:
 	void prepareSettings(Settings* settings);
@@ -74,13 +78,17 @@ void PilotStudyApp::setup() {
 	_port = 3000;
 	_sender.setup(_hostname, _port);
 
+	XmlTree tracksDoc(loadAsset("tracksconfig.xml"));
+	XmlTree cellsDoc(loadAsset("cellsconfig.xml"));
+	
 	_cellController.init();
 	_currentBar = 0;
 	_score.init();
 	_score.position(getWindowSize()/2);
 
-	_cue = timeline().add( std::bind(&PilotStudyApp::playTimerCallback, this), timeline().getCurrentTime() + 1 );
-	_cue->setDuration(1);
+	// I'd rather use an OSC Listener but for the time being...
+	_cue = timeline().add( std::bind(&PilotStudyApp::playTimerCallback, this), timeline().getCurrentTime() + LOOPS_LENGTH );
+	_cue->setDuration(LOOPS_LENGTH);
 	_cue->setAutoRemove(false);
 	_cue->setLoop(true);
 }
@@ -160,7 +168,17 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 }
 
 void PilotStudyApp::playTimerCallback() {
-	//console() << getElapsedSeconds() << std::endl;
+	std::list<int> playingCells = _score.cellsInBar(_currentBar);
+	
+	osc::Message m;
+	m.setAddress("/playclip");
+	m.addStringArg("track1");
+	m.addStringArg("track9");
+	m.addStringArg("track17");
+	m.addStringArg("track25");
+	m.setRemoteEndpoint(_hostname, _port);
+	_sender.sendMessage(m);
+
     _currentBar = (++_currentBar)%8;
     _score.cellsInBar(_currentBar);
 }
@@ -170,17 +188,6 @@ void PilotStudyApp::update() {
 
 	_score.cells(_cellController.cells());
 	_score.update();
-
-	std::list<int> playingCells = _score.cellsInBar(_currentBar);
-	//_currentBar = (_currentBar+1)%8;
-
-	/*
-	osc::Message m;
-	m.setAddress("/playmeasure");
-	m.addIntArg(0);
-	m.setRemoteEndpoint(_hostname, _port);
-	_sender.sendMessage(m);
-	*/
 }
 
 void PilotStudyApp::draw() {
