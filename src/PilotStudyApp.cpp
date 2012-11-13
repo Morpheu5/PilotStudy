@@ -61,13 +61,12 @@ public:
 
 void PilotStudyApp::prepareSettings(Settings* settings) {
 	settings->enableMultiTouch();
+	settings->setFullScreen(true);
+	settings->setFrameRate(FPS);
 }
 
 void PilotStudyApp::setup() {
 	Rand::randomize();
-	setFrameRate(FPS);
-	//setFullScreen(true);
-	setWindowSize(800, 800);
 	gl::enableAlphaBlending(true);
 	gl::enable(GL_TEXTURE_2D);
 
@@ -78,9 +77,15 @@ void PilotStudyApp::setup() {
 	_port = 3000;
 	_sender.setup(_hostname, _port);
 
-	XmlTree tracksDoc(loadAsset("tracksconfig.xml"));
-	
-	_cellController.init();
+	XmlTree loopsDoc(loadAsset("loops.xml"));
+	// iterators iterate over children
+	XmlTree loops = loopsDoc.getChild("root/loops");
+	std::vector<std::string> loopNames;
+	for(XmlTree::Iter loop = loops.begin(); loop != loops.end(); ++loop) {
+		loopNames.push_back(loop->getAttributeValue<std::string>("name"));
+	}
+
+	_cellController.init(4, loopNames);
 	_currentBar = 0;
 	_score.init();
 	_score.position(getWindowSize()/2);
@@ -167,14 +172,13 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 }
 
 void PilotStudyApp::playTimerCallback() {
-	std::list<int> playingCells = _score.cellsInBar(_currentBar);
+	std::list<Cell> playingCells = _score.cellsInBar(_currentBar);
 	
 	osc::Message m;
 	m.setAddress("/playclip");
-	m.addStringArg("track1");
-	m.addStringArg("track9");
-	m.addStringArg("track17");
-	m.addStringArg("track25");
+	for(auto it = playingCells.begin(); it != playingCells.end(); ++it) {
+		m.addStringArg(it->loopName());
+	}
 	m.setRemoteEndpoint(_hostname, _port);
 	_sender.sendMessage(m);
 
@@ -194,10 +198,6 @@ void PilotStudyApp::draw() {
 
 	_score.draw();
 	_cellController.draw();
-
-	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
-		gl::drawSolidCircle(it->second.position(), 10);
-	}
 }
 
 CINDER_APP_BASIC( PilotStudyApp, RendererGl )

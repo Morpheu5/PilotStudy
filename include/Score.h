@@ -25,7 +25,7 @@ public:
 	void update();
 	void draw();
 
-	std::list<int> cellsInBar(int bar);
+	std::list<Cell> cellsInBar(int bar);
 
 	/*** ACCESSORS ***/
 

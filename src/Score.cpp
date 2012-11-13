@@ -23,14 +23,14 @@ void Score::init() {
 	_artwork = svg::Doc::create(app::getAssetPath("flower.svg"));
 }
 
-std::list<int> Score::cellsInBar(int bar) {
+std::list<Cell> Score::cellsInBar(int bar) {
     _playingBar = bar;
-	std::list<int> cells;
+	std::list<Cell> cells;
 	for(int track = 0; track < 4; track++) {
 		std::pair<int, int> nId(track, bar);
 		int cId = _activeCells[nId];
 		if(cId != 0) {
-			cells.push_back(_activeCells[nId]);
+			cells.push_back(_cells[_activeCells[nId]]);
 		}
 	}
 	return cells;
@@ -81,12 +81,17 @@ void Score::update() {
 }
 
 void Score::draw() {
-	 Rectf rect = _artwork->getBoundingBox();
-	 cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
-	 cairo::Context ctx(sImg);
-	 ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
-	 ctx.render(*_artwork);
-	 _texture = sImg.getSurface();
-	 _texture.enableAndBind();
-	 gl::draw(_texture, _position - _artwork->getSize()/2);
+	Rectf rect = _artwork->getBoundingBox();
+	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
+	cairo::Context ctx(sImg);
+	ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
+	ctx.render(*_artwork);
+	_texture = sImg.getSurface();
+	_texture.enableAndBind();
+	gl::draw(_texture, _position - _artwork->getSize()/2);
+	_texture.disable();
+
+	gl::color(ColorA8u(82, 102, 122));
+	gl::drawVector(Vec3f(app::getWindowWidth()/2 - 20, app::getWindowHeight()/2 - rect.getHeight()/2 - 20, 0), Vec3f(app::getWindowWidth()/2, app::getWindowHeight()/2 - rect.getHeight()/2 - 20, 0), 20, 5);
+	gl::color(1,1,1,1);
 }

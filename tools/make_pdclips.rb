@@ -20,8 +20,9 @@ puts "#X obj 10 10 soundfiler;"
 puts "#X obj 10 40 loadbang;"
 
 filenames.each do |f|
-  puts "#X obj 500 #{y} table track#{i};"
-  puts "#X msg 150 #{y} read -resize #{f} track#{i};"
+  name = File.basename(f, ".wav"0
+  puts "#X obj 500 #{y} table #{name};"
+  puts "#X msg 150 #{y} read -resize #{f} #{name};"
   y += 30
   i += 1
 end

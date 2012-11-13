@@ -13,7 +13,7 @@ public:
 	CellController();
 	virtual ~CellController();
 
-	void init();
+	void init(int players, std::vector<std::string>& loops);
 
 	void addTouches(std::list<TouchPoint>& m);
 	void updateTouches(std::list<TouchPoint>& m);

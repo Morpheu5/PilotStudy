@@ -7,6 +7,7 @@ class Cell {
 
 	ci::Vec2f _position;
 	int _id;
+	std::string _loopName;
 
 	ci::svg::DocRef _artwork;
 	ci::gl::Texture _texture;
@@ -29,5 +30,8 @@ public:
 
 	const int id() const { return _id; }
 	void id(const int i) { _id = i; }
+
+	const std::string loopName() const { return _loopName; }
+	void loopName(std::string& n) { _loopName = n; }
 };
 

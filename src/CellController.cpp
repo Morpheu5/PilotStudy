@@ -15,12 +15,94 @@ CellController::~CellController() {
 	
 }
 
-void CellController::init() {
-	for(int i = 1; i <= 10; i++) {
-		ci::Vec2f p = Vec2f(randFloat(app::getWindowWidth()), randFloat(app::getWindowHeight()));
-		Cell c(p);
-		c.id(i);
-		_cells[i] = c;
+void CellController::init(int players, std::vector<std::string>& loops) {
+	Cell c;
+	ci::Vec2f p;
+	int i, j, k, n, id = 1;
+
+	app::console() << app::getWindowWidth() << " " << app::getWindowHeight() << std::endl;
+
+	// Try to keep pools down to three rows tops
+	int cols = std::max(8, (int)ceil(loops.size()/3.0));
+	int borderPadding = (45 + 60 * ((loops.size()-1) / cols));
+	int hDisplacement = floor(60 * (std::min(cols, (int)loops.size()) - 1) * 0.5);
+
+	switch(players) {
+	case 4:
+		i = 0;
+		j = 0;
+		for(k = 0; k < loops.size(); k++) {
+			p = Vec2f(app::getWindowWidth() - borderPadding + (60*j), app::getWindowHeight()/2 + hDisplacement - (60*(i % cols)));
+
+			for(n = 0; n < cols; n++) {
+				c = Cell(p);
+				c.id(id);
+				c.loopName(loops[k]);
+				_cells[id] = c;
+				id++;
+			}
+
+			if(++i % cols == 0) {
+				j++;
+			}
+		}
+	case 3:
+		i = 0;
+		j = 0;
+		for(k = 0; k < loops.size(); k++) {
+			p = Vec2f(borderPadding - (60*j), app::getWindowHeight()/2 - hDisplacement + (60*(i % cols)));
+			
+			for(n = 0; n < cols; n++) {
+				c = Cell(p);
+				c.id(id);
+				c.loopName(loops[k]);
+				_cells[id] = c;
+				id++;
+			}
+
+			if(++i % cols == 0) {
+				j++;
+			}
+		}
+	case 2:
+		i = 0;
+		j = 0;
+		for(k = 0; k < loops.size(); k++) {
+			p = Vec2f(app::getWindowWidth()/2 + hDisplacement - (60 * (i % cols)), borderPadding - (60*j));
+			
+			for(n = 0; n < cols; n++) {
+				c = Cell(p);
+				c.id(id);
+				c.loopName(loops[k]);
+				_cells[id] = c;
+				id++;
+			}
+
+			if(++i % cols == 0) {
+				j++;
+			}
+		}
+	case 1:
+		i = 0;
+		j = 0;
+		for(k = 0; k < loops.size(); k++) {
+			p = Vec2f(app::getWindowWidth()/2 - hDisplacement + (60 * (i % cols)), app::getWindowHeight() - borderPadding + (60*j));
+			
+			for(n = 0; n < cols; n++) {
+				c = Cell(p);
+				c.id(id);
+				c.loopName(loops[k]);
+				_cells[id] = c;
+				id++;
+			}
+
+			if(++i % cols == 0) {
+				j++;
+			}
+		}
+		break;
+	default:
+		break;
 	}
 }
 

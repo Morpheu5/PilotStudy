@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<root>
+	<loops>
+		<loop name="bass_1" />
+		<loop name="bass_2" />
+		<loop name="bass_3" />
+		<loop name="bass_4" />
+		<loop name="bass_5" />
+		<loop name="bass_6" />
+		<loop name="bass_7" />
+		<loop name="bass_8" />
+		<loop name="piano_1" />
+		<loop name="piano_2" />
+		<loop name="piano_3" />
+		<loop name="piano_4" />
+		<loop name="piano_5" />
+		<loop name="piano_6" />
+		<loop name="piano_7" />
+		<loop name="piano_8" />
+		<loop name="drums_1" />
+		<loop name="drums_2" />
+		<loop name="drums_3" />
+		<loop name="drums_4" />
+		<loop name="drums_5" />
+		<loop name="drums_6" />
+		<loop name="drums_7" />
+		<loop name="drums_8" />
+		<loop name="trumpets_1" />
+		<loop name="trumpets_2" />
+		<loop name="trumpets_3" />
+		<loop name="trumpets_4" />
+		<loop name="trumpets_5" />
+		<loop name="trumpets_6" />
+		<loop name="trumpets_7" />
+		<loop name="trumpets_8" />
+	</loops>
+</root>

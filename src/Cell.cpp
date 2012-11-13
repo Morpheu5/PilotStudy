@@ -24,7 +24,6 @@ Cell::Cell(ci::Vec2f& p) {
 	ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
 	ctx.render(*_artwork);
 	_texture = sImg.getSurface();
-	_texture.enableAndBind();
 }
 
 Cell::~Cell() {
@@ -36,7 +35,9 @@ void Cell::update() {
 }
 
 void Cell::draw() {
+	_texture.enableAndBind();
 	gl::draw(_texture, _position - _artwork->getSize()/2);
+	_texture.disable();
 }
 
 bool Cell::hit(const ci::Vec2f& p) {
