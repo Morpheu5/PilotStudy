@@ -79,7 +79,6 @@ void PilotStudyApp::setup() {
 	_sender.setup(_hostname, _port);
 
 	XmlTree tracksDoc(loadAsset("tracksconfig.xml"));
-	XmlTree cellsDoc(loadAsset("cellsconfig.xml"));
 	
 	_cellController.init();
 	_currentBar = 0;
