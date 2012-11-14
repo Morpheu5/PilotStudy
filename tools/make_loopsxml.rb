@@ -13,11 +13,11 @@ end
 filenames = Dir.glob("#{ARGV[0]}/*.wav")
 i = 1
 
-puts '<?xml version="1.0" ?>' + "\n" + '<root>'
+puts '<?xml version="1.0" ?>' + "\n" + '<root>' + "\n\t" + '<loops>'
 
 filenames.each do |f|
-  puts "\t" + '<loop name="' + File.basename(f, '.wav') + '" />'
+  puts "\t\t" + '<loop name="' + File.basename(f, '.wav') + '" />'
   i += 1
 end
 
-puts '</root>'
+puts "\t</loops>\n</root>"

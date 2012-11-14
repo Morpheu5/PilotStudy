@@ -61,7 +61,8 @@ public:
 
 void PilotStudyApp::prepareSettings(Settings* settings) {
 	settings->enableMultiTouch();
-	settings->setFullScreen(true);
+	//settings->setFullScreen(true);
+	settings->setWindowSize(1920, 1080);
 	settings->setFrameRate(FPS);
 }
 
@@ -172,6 +173,7 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 }
 
 void PilotStudyApp::playTimerCallback() {
+    _currentBar = (++_currentBar)%8;
 	std::list<Cell> playingCells = _score.cellsInBar(_currentBar);
 	
 	osc::Message m;
@@ -181,9 +183,6 @@ void PilotStudyApp::playTimerCallback() {
 	}
 	m.setRemoteEndpoint(_hostname, _port);
 	_sender.sendMessage(m);
-
-    _currentBar = (++_currentBar)%8;
-    _score.cellsInBar(_currentBar);
 }
 
 void PilotStudyApp::update() {

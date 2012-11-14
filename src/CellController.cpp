@@ -22,8 +22,8 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 
 	app::console() << app::getWindowWidth() << " " << app::getWindowHeight() << std::endl;
 
-	// Try to keep pools down to three rows tops
-	int cols = std::max(8, (int)ceil(loops.size()/3.0));
+	// Try to keep pools down to two rows tops
+	int cols = std::max(8, (int)ceil(loops.size()/2.0));
 	int borderPadding = (45 + 60 * ((loops.size()-1) / cols));
 	int hDisplacement = floor(60 * (std::min(cols, (int)loops.size()) - 1) * 0.5);
 
