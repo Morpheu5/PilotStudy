@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<root>
+	<tags>
+		<tag name="happy">
+			<loop name="piano_1" />
+			<loop name="piano_2" />
+			<loop name="piano_3" />
+		</tag>
+		<tag name="sad">
+			<loop name="bass_1" />
+			<loop name="bass_2" />
+			<loop name="bass_3" />
+		</tag>
+		<tag name="smooth">
+			<loop name="drums_1" />
+			<loop name="drums_2" />
+			<loop name="drums_3" />
+		</tag>
+		<tag name="rough">
+			<loop name="trumpets_1" />
+			<loop name="trumpets_2" />
+			<loop name="trumpets_3" />
+		</tag>
+	</tags>
+</root>
