@@ -155,6 +155,37 @@ void PilotStudyApp::setupForScene(Scene s) {
 			break;
 		}
 		case LoopSelectionScene: {
+			XmlTree loopsDoc("root", "");
+			XmlTree loops("loops", "");
+			XmlTree tagsDoc(loadAsset("tags.xml"));
+			XmlTree selTagsDoc("root", "");
+			XmlTree selTags("tags", "");
+			
+			std::set<std::string> loopSet;
+			for(auto tagIt = _tags.begin(); tagIt != _tags.end(); ++tagIt) {
+				tagIt->texture.disable();
+				if(tagIt->selected) {
+					XmlTree selTag("tag", "");
+					selTag.setAttribute("name", tagIt->name);
+					selTags.push_back(selTag);
+					for(auto xTagIt = tagsDoc.begin("root/tags/tag"); xTagIt != tagsDoc.end(); ++xTagIt) {
+						if(xTagIt->getAttributeValue<std::string>("name") == tagIt->name) {
+							for(auto loopIt = xTagIt->begin("loop"); loopIt != xTagIt->end(); ++loopIt) {
+								loopSet.insert(loopIt->getAttributeValue<std::string>("name"));
+							}
+						}
+					}
+				}
+			}
+			selTagsDoc.push_back(selTags);
+			selTagsDoc.write(writeFile(getAssetPath("")/"selected_tags.xml"));
+			for(auto loopIt = loopSet.begin(); loopIt != loopSet.end(); ++loopIt) {
+				XmlTree loop("loop", "");
+				loop.setAttribute("name", *loopIt);
+				loops.push_back(loop);
+			}
+			loopsDoc.push_back(loops);
+			loopsDoc.write(writeFile(getAssetPath("")/"temp_loops.xml"));
 			break;
 		}
 		case ActionScene: {
@@ -188,16 +219,40 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 		}
 		case 'c': {
 			gl::enableAlphaBlending(true);
-			if(_scene == TagSelectionScene) {
-				for(int i = 0; i < _tags.size(); i++) {
-					Vec2f p = Vec2f(0.0f, 350.0f);
-					p.rotate(((((_tags.size()%2)*0.5)+i)*2*M_PI) / _tags.size());
-					_tags[i].position = p + getWindowCenter();
+			switch(_scene) {
+				case TagSelectionScene: {
+					for(int i = 0; i < _tags.size(); i++) {
+						Vec2f p = Vec2f(0.0f, 350.0f);
+						p.rotate(((((_tags.size()%2)*0.5)+i)*2*M_PI) / _tags.size());
+						_tags[i].position = p + getWindowCenter();
+					}
+					break;
 				}
-			} else if (_scene == LoopSelectionScene) {
-
-			} else if (_scene == ActionScene) {
-				_score.position(getWindowSize()/2);
+				case LoopSelectionScene: {
+					
+					break;
+				}
+				case ActionScene: {
+					_score.position(getWindowSize()/2);
+					break;
+				}
+			}
+			break;
+		}
+		case 'n': {
+			switch(_scene) {
+				case TagSelectionScene: {
+					setupForScene(LoopSelectionScene);
+					break;
+				}
+				case LoopSelectionScene: {
+					setupForScene(ActionScene);
+					break;
+				}
+				case ActionScene: {
+					// nop
+					break;
+				}
 			}
 			break;
 		}
