@@ -1,2 +1,4 @@
 .DS_Store
 *.wav
+assets/selected_tags.xml
+assets/temp_loops.xml
