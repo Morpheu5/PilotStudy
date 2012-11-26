@@ -20,8 +20,6 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 	ci::Vec2f p;
 	int i, j, k, n, id = 1;
 
-	app::console() << app::getWindowWidth() << " " << app::getWindowHeight() << std::endl;
-
 	// Try to keep pools down to two rows tops
 	int cols = std::max(8, (int)ceil(loops.size()/2.0));
 	int borderPadding = (45 + 60 * ((loops.size()-1) / cols));

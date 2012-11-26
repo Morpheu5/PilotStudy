@@ -46,6 +46,7 @@ public:
 		}
 		l.addLine(name);
 		texture = gl::Texture(l.render(true, true));
+		texture.enableAndBind();
 		/*
 		Area a = texture.getBounds();
 		a.expand(20, 10);
@@ -56,6 +57,7 @@ public:
 		*/
 		gl::color(1,1,1);
 		gl::draw(texture, position - texture.getSize()/2);
+		texture.disable();
 	}
 
 	bool hit(Vec2f p) {
@@ -74,6 +76,7 @@ class PilotStudyApp : public AppBasic {
 		TagSelectionScene, LoopSelectionScene, ActionScene
 	} _scene;
 	std::vector<Tag> _tags;
+	std::map<int, Cell> _tempCells;
 
 	tuio::Client _tuioClient;
 	TouchMap _activePoints;
@@ -89,6 +92,7 @@ class PilotStudyApp : public AppBasic {
 public:
 	void prepareSettings(Settings* settings);
 	void setup();
+	void prepareNextScene();
 	void setupForScene(Scene s);
 
 	void keyDown(KeyEvent event);
@@ -132,26 +136,9 @@ void PilotStudyApp::setup() {
 	setupForScene(_scene);
 }
 
-void PilotStudyApp::setupForScene(Scene s) {
-	_scene = s;
-
+void PilotStudyApp::prepareNextScene() {
 	switch(_scene) {
 		case TagSelectionScene: {
-			XmlTree tagsDoc(loadAsset("tags.xml"));
-			XmlTree tags = tagsDoc.getChild("root/tags");
-			int tagCount = tags.getChildren().size();
-			int tagCounter = 0;
-			for(XmlTree::Iter tag = tags.begin(); tag != tags.end(); ++tag) {
-				Tag t;
-				t.name = tag->getAttributeValue<std::string>("name");
-				Vec2f p = Vec2f(0.0f, 350.0f);
-				p.rotate(((((tagCount%2)*0.5)+tagCounter)*2*M_PI)/tagCount);
-				t.position = p + getWindowCenter();
-				t.selected = true;
-				
-				_tags.push_back(t);
-				tagCounter++;
-			}
 			break;
 		}
 		case LoopSelectionScene: {
@@ -160,7 +147,7 @@ void PilotStudyApp::setupForScene(Scene s) {
 			XmlTree tagsDoc(loadAsset("tags.xml"));
 			XmlTree selTagsDoc("root", "");
 			XmlTree selTags("tags", "");
-			
+
 			std::set<std::string> loopSet;
 			for(auto tagIt = _tags.begin(); tagIt != _tags.end(); ++tagIt) {
 				tagIt->texture.disable();
@@ -189,7 +176,53 @@ void PilotStudyApp::setupForScene(Scene s) {
 			break;
 		}
 		case ActionScene: {
-			XmlTree loopsDoc(loadAsset("loops.xml"));
+			break;
+		}
+	}
+}
+
+void PilotStudyApp::setupForScene(Scene s) {
+	_scene = s;
+
+	switch(_scene) {
+		case TagSelectionScene: {
+			XmlTree tagsDoc(loadAsset("tags.xml"));
+			XmlTree tags = tagsDoc.getChild("root/tags");
+			int tagCount = tags.getChildren().size();
+			int tagCounter = 0;
+			for(XmlTree::Iter tag = tags.begin(); tag != tags.end(); ++tag) {
+				Tag t;
+				t.name = tag->getAttributeValue<std::string>("name");
+				Vec2f p = Vec2f(0.0f, 350.0f);
+				p.rotate(((((tagCount%2)*0.5)+tagCounter)*2*M_PI)/tagCount);
+				t.position = p + getWindowCenter();
+				t.selected = true;
+				
+				_tags.push_back(t);
+				tagCounter++;
+			}
+			break;
+		}
+		case LoopSelectionScene: {
+			XmlTree loopsDoc(loadAsset("temp_loops.xml"));
+			int id = 1;
+			for(auto it = loopsDoc.begin("root/loops/loop"); it != loopsDoc.end(); ++it) {
+				float radius = randFloat(300.0f);
+				float angle = randFloat(2*M_PI);
+				Vec2f p = Vec2f(radius, 0.0f);
+				p.rotate(angle);
+				p += getWindowCenter();
+				Cell c(p);
+				c.id(id);
+				std::string name = it->getAttributeValue<std::string>("name");
+				c.loopName(name);
+				_tempCells[id] = c;
+				id++;
+			}
+			break;
+		}
+		case ActionScene: {
+			XmlTree loopsDoc(loadAsset("selected_loops.xml"));
 			// iterators iterate over children
 			XmlTree loops = loopsDoc.getChild("root/loops");
 			std::vector<std::string> loopNames;
@@ -246,6 +279,7 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 					break;
 				}
 				case LoopSelectionScene: {
+					prepareNextScene();
 					setupForScene(ActionScene);
 					break;
 				}
@@ -313,7 +347,19 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 		_activePoints[tid] = TouchPoint(tid, position);
 		l.push_back(_activePoints[tid]);
 	}
-	_cellController.addTouches(l);
+
+	switch(_scene) {
+		case TagSelectionScene: {
+			break;
+		}
+		case LoopSelectionScene: {
+			break;
+		}
+		case ActionScene: {
+			_cellController.addTouches(l);
+			break;
+		}
+	}
 }
 
 void PilotStudyApp::touchesMoved(TouchEvent event) {
@@ -325,7 +371,19 @@ void PilotStudyApp::touchesMoved(TouchEvent event) {
 		_activePoints[tid].addPoint(position);
 		l.push_back(_activePoints[tid]);
 	}
-	_cellController.updateTouches(l);
+	
+	switch(_scene) {
+		case TagSelectionScene: {
+			break;
+		}
+		case LoopSelectionScene: {
+			break;
+		}
+		case ActionScene: {
+			_cellController.updateTouches(l);
+			break;
+		}
+	}
 }
 
 void PilotStudyApp::touchesEnded(TouchEvent event) {
@@ -336,7 +394,19 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 		l.push_back(_activePoints[tid]);
 		_activePoints.erase(tid);
 	}
-	_cellController.removeTouches(l);
+
+	switch(_scene) {
+		case TagSelectionScene: {
+			break;
+		}
+		case LoopSelectionScene: {
+			break;
+		}
+		case ActionScene: {
+			_cellController.removeTouches(l);
+			break;
+		}
+	}
 }
 
 void PilotStudyApp::playTimerCallback() {
@@ -384,10 +454,14 @@ void PilotStudyApp::draw() {
 			gl::color(ColorA8u(82, 102, 122));
 			glLineWidth(10.0f);
 
-			gl::drawStrokedCircle(getWindowCenter(), 350.0f);
+			gl::drawSolidCircle(getWindowCenter(), 350.0f);
 
 			glLineWidth(1.0f);
 			gl::color(ColorA8u(255, 255, 255));
+
+			for(auto it = _tempCells.begin(); it != _tempCells.end(); ++it) {
+				it->second.draw();
+			}
 			break;
 		}
 		case ActionScene: {
