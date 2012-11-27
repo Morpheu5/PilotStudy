@@ -25,83 +25,105 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 	int borderPadding = (45 + 60 * ((loops.size()-1) / cols));
 	int hDisplacement = floor(60 * (std::min(cols, (int)loops.size()) - 1) * 0.5);
 
+	_cells.clear();
+
 	switch(players) {
-	case 4:
-		i = 0;
-		j = 0;
-		for(k = 0; k < loops.size(); k++) {
-			p = Vec2f(app::getWindowWidth() - borderPadding + (60*j), app::getWindowHeight()/2 + hDisplacement - (60*(i % cols)));
+		case 4: {
+			i = 0;
+			j = 0;
+			for(k = 0; k < loops.size(); k++) {
+				p = Vec2f(app::getWindowWidth() - borderPadding + (60*j), app::getWindowHeight()/2 + hDisplacement - (60*(i % cols)));
 
-			for(n = 0; n < cols; n++) {
+				for(n = 0; n < cols; n++) {
+					c = Cell(p);
+					c.id(id);
+					c.loopName(loops[k]);
+					_cells[id] = c;
+					id++;
+				}
+
+				if(++i % cols == 0) {
+					j++;
+				}
+			}
+		}
+		case 3: {
+			i = 0;
+			j = 0;
+			for(k = 0; k < loops.size(); k++) {
+				p = Vec2f(borderPadding - (60*j), app::getWindowHeight()/2 - hDisplacement + (60*(i % cols)));
+				
+				for(n = 0; n < cols; n++) {
+					c = Cell(p);
+					c.id(id);
+					c.loopName(loops[k]);
+					_cells[id] = c;
+					id++;
+				}
+
+				if(++i % cols == 0) {
+					j++;
+				}
+			}
+		}
+		case 2: {
+			i = 0;
+			j = 0;
+			for(k = 0; k < loops.size(); k++) {
+				p = Vec2f(app::getWindowWidth()/2 + hDisplacement - (60 * (i % cols)), borderPadding - (60*j));
+				
+				for(n = 0; n < cols; n++) {
+					c = Cell(p);
+					c.id(id);
+					c.loopName(loops[k]);
+					_cells[id] = c;
+					id++;
+				}
+
+				if(++i % cols == 0) {
+					j++;
+				}
+			}
+		}
+		case 1: {
+			i = 0;
+			j = 0;
+			for(k = 0; k < loops.size(); k++) {
+				p = Vec2f(app::getWindowWidth()/2 - hDisplacement + (60 * (i % cols)), app::getWindowHeight() - borderPadding + (60*j));
+				
+				for(n = 0; n < cols; n++) {
+					c = Cell(p);
+					c.id(id);
+					c.loopName(loops[k]);
+					_cells[id] = c;
+					id++;
+				}
+
+				if(++i % cols == 0) {
+					j++;
+				}
+			}
+			break;
+		}
+		case 0: { // This is a special one for the LoopSelectionScene
+			int id = 1;
+			for(k = 0; k < loops.size(); k++) {
+				float radius = randFloat(300.0f);
+				float angle = randFloat(2*M_PI);
+				Vec2f p = Vec2f(radius, 0.0f);
+				p.rotate(angle);
+				p += app::getWindowCenter();
 				c = Cell(p);
 				c.id(id);
 				c.loopName(loops[k]);
 				_cells[id] = c;
 				id++;
 			}
-
-			if(++i % cols == 0) {
-				j++;
-			}
+			break;
 		}
-	case 3:
-		i = 0;
-		j = 0;
-		for(k = 0; k < loops.size(); k++) {
-			p = Vec2f(borderPadding - (60*j), app::getWindowHeight()/2 - hDisplacement + (60*(i % cols)));
-			
-			for(n = 0; n < cols; n++) {
-				c = Cell(p);
-				c.id(id);
-				c.loopName(loops[k]);
-				_cells[id] = c;
-				id++;
-			}
-
-			if(++i % cols == 0) {
-				j++;
-			}
+		default:
+			break;
 		}
-	case 2:
-		i = 0;
-		j = 0;
-		for(k = 0; k < loops.size(); k++) {
-			p = Vec2f(app::getWindowWidth()/2 + hDisplacement - (60 * (i % cols)), borderPadding - (60*j));
-			
-			for(n = 0; n < cols; n++) {
-				c = Cell(p);
-				c.id(id);
-				c.loopName(loops[k]);
-				_cells[id] = c;
-				id++;
-			}
-
-			if(++i % cols == 0) {
-				j++;
-			}
-		}
-	case 1:
-		i = 0;
-		j = 0;
-		for(k = 0; k < loops.size(); k++) {
-			p = Vec2f(app::getWindowWidth()/2 - hDisplacement + (60 * (i % cols)), app::getWindowHeight() - borderPadding + (60*j));
-			
-			for(n = 0; n < cols; n++) {
-				c = Cell(p);
-				c.id(id);
-				c.loopName(loops[k]);
-				_cells[id] = c;
-				id++;
-			}
-
-			if(++i % cols == 0) {
-				j++;
-			}
-		}
-		break;
-	default:
-		break;
-	}
 }
 
 void CellController::addTouches(std::list<TouchPoint>& l) {

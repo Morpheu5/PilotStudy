@@ -124,8 +124,6 @@ void PilotStudyApp::setup() {
 	gl::enableAlphaBlending(true);
 	gl::enable(GL_TEXTURE_2D);
 
-	_scene = TagSelectionScene;
-
 	_tuioClient.registerTouches(this);
 	_tuioClient.connect(); // defaults to UDP 3333
 
@@ -133,7 +131,7 @@ void PilotStudyApp::setup() {
 	_port = 3000;
 	_sender.setup(_hostname, _port);
 
-	setupForScene(_scene);
+	setupForScene(TagSelectionScene);
 }
 
 void PilotStudyApp::prepareNextScene() {
@@ -205,20 +203,11 @@ void PilotStudyApp::setupForScene(Scene s) {
 		}
 		case LoopSelectionScene: {
 			XmlTree loopsDoc(loadAsset("temp_loops.xml"));
-			int id = 1;
+			std::vector<std::string> loops;
 			for(auto it = loopsDoc.begin("root/loops/loop"); it != loopsDoc.end(); ++it) {
-				float radius = randFloat(300.0f);
-				float angle = randFloat(2*M_PI);
-				Vec2f p = Vec2f(radius, 0.0f);
-				p.rotate(angle);
-				p += getWindowCenter();
-				Cell c(p);
-				c.id(id);
-				std::string name = it->getAttributeValue<std::string>("name");
-				c.loopName(name);
-				_tempCells[id] = c;
-				id++;
+				loops.push_back(it->getAttributeValue<std::string>("name"));
 			}
+			_cellController.init(0, loops);
 			break;
 		}
 		case ActionScene: {
@@ -311,7 +300,7 @@ void PilotStudyApp::mouseDown(MouseEvent event) {
 			break;
 		}
 		case LoopSelectionScene: {
-			break;
+
 		}
 		case ActionScene: {
 			_cellController.addTouches(l);
@@ -353,7 +342,7 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 			break;
 		}
 		case LoopSelectionScene: {
-			break;
+
 		}
 		case ActionScene: {
 			_cellController.addTouches(l);
@@ -377,7 +366,7 @@ void PilotStudyApp::touchesMoved(TouchEvent event) {
 			break;
 		}
 		case LoopSelectionScene: {
-			break;
+
 		}
 		case ActionScene: {
 			_cellController.updateTouches(l);
@@ -400,7 +389,7 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 			break;
 		}
 		case LoopSelectionScene: {
-			break;
+
 		}
 		case ActionScene: {
 			_cellController.removeTouches(l);
@@ -459,9 +448,8 @@ void PilotStudyApp::draw() {
 			glLineWidth(1.0f);
 			gl::color(ColorA8u(255, 255, 255));
 
-			for(auto it = _tempCells.begin(); it != _tempCells.end(); ++it) {
-				it->second.draw();
-			}
+			_cellController.draw();
+			
 			break;
 		}
 		case ActionScene: {
