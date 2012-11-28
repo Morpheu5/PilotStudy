@@ -20,6 +20,7 @@
 
 #define FPS 60
 #define LOOPS_LENGTH 2
+#define LOOP_SELECTION_CIRCLE_RADIUS 350.0f
 
 using namespace ci;
 using namespace ci::app;
@@ -137,9 +138,6 @@ void PilotStudyApp::setup() {
 void PilotStudyApp::prepareNextScene() {
 	switch(_scene) {
 		case TagSelectionScene: {
-			break;
-		}
-		case LoopSelectionScene: {
 			XmlTree loopsDoc("root", "");
 			XmlTree loops("loops", "");
 			XmlTree tagsDoc(loadAsset("tags.xml"));
@@ -171,6 +169,21 @@ void PilotStudyApp::prepareNextScene() {
 			}
 			loopsDoc.push_back(loops);
 			loopsDoc.write(writeFile(getAssetPath("")/"temp_loops.xml"));
+			break;
+		}
+		case LoopSelectionScene: {
+			XmlTree loopsDoc("root", "");
+			XmlTree loops("loops", "");
+			std::map<int, Cell> cells = _cellController.cells();
+			for(auto it = cells.begin(); it != cells.end(); ++it) {
+				if(it->second.position().distance(getWindowCenter()) < LOOP_SELECTION_CIRCLE_RADIUS) {
+					XmlTree loop("loop", "");
+					loop.setAttribute("name", it->second.loopName());
+					loops.push_back(loop);
+				}
+			}
+			loopsDoc.push_back(loops);
+			loopsDoc.write(writeFile(getAssetPath("")/"selected_loops.xml"));
 			break;
 		}
 		case ActionScene: {
@@ -244,7 +257,7 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 			switch(_scene) {
 				case TagSelectionScene: {
 					for(int i = 0; i < _tags.size(); i++) {
-						Vec2f p = Vec2f(0.0f, 350.0f);
+						Vec2f p = Vec2f(0.0f, LOOP_SELECTION_CIRCLE_RADIUS);
 						p.rotate(((((_tags.size()%2)*0.5)+i)*2*M_PI) / _tags.size());
 						_tags[i].position = p + getWindowCenter();
 					}
@@ -264,6 +277,7 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 		case 'n': {
 			switch(_scene) {
 				case TagSelectionScene: {
+					prepareNextScene();
 					setupForScene(LoopSelectionScene);
 					break;
 				}
@@ -299,9 +313,7 @@ void PilotStudyApp::mouseDown(MouseEvent event) {
 			}
 			break;
 		}
-		case LoopSelectionScene: {
-
-		}
+		case LoopSelectionScene:
 		case ActionScene: {
 			_cellController.addTouches(l);
 			break;
@@ -341,9 +353,7 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 		case TagSelectionScene: {
 			break;
 		}
-		case LoopSelectionScene: {
-
-		}
+		case LoopSelectionScene:
 		case ActionScene: {
 			_cellController.addTouches(l);
 			break;
@@ -365,9 +375,7 @@ void PilotStudyApp::touchesMoved(TouchEvent event) {
 		case TagSelectionScene: {
 			break;
 		}
-		case LoopSelectionScene: {
-
-		}
+		case LoopSelectionScene:
 		case ActionScene: {
 			_cellController.updateTouches(l);
 			break;
@@ -388,9 +396,7 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 		case TagSelectionScene: {
 			break;
 		}
-		case LoopSelectionScene: {
-
-		}
+		case LoopSelectionScene:
 		case ActionScene: {
 			_cellController.removeTouches(l);
 			break;
@@ -443,7 +449,7 @@ void PilotStudyApp::draw() {
 			gl::color(ColorA8u(82, 102, 122));
 			glLineWidth(10.0f);
 
-			gl::drawSolidCircle(getWindowCenter(), 350.0f);
+			gl::drawSolidCircle(getWindowCenter(), LOOP_SELECTION_CIRCLE_RADIUS);
 
 			glLineWidth(1.0f);
 			gl::color(ColorA8u(255, 255, 255));
