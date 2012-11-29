@@ -404,7 +404,25 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 		case TagSelectionScene: {
 			break;
 		}
-		case LoopSelectionScene:
+		case LoopSelectionScene: { // detecting a tap
+			std::map<int, Cell> cells = _cellController.cells();
+			for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
+				PolyLine<Vec2f> path = touchIt->path();
+				Vec2f first = *(path.begin());
+				Vec2f last = *(path.end()-1);
+				if(first.distance(last) < 10.0f) {
+					for(auto cellIt = cells.begin(); cellIt != cells.end(); ++cellIt) {
+						if(cellIt->second.hit(last)) {
+							osc::Message m;
+							m.setAddress("/playclip");
+							m.addStringArg(cellIt->second.loopName());
+							m.setRemoteEndpoint(_hostname, _port);
+							_sender.sendMessage(m);
+						}
+					}
+				}
+			}
+		}
 		case ActionScene: {
 			_cellController.removeTouches(l);
 			break;
@@ -471,6 +489,10 @@ void PilotStudyApp::draw() {
 			_cellController.draw();
 			break;
 		}
+	}
+
+	for(auto it = _activePoints.begin(); it != _activePoints.end(); ++it) {
+		gl::drawSolidCircle(it->second.position(), 15.0f);
 	}
 }
 
