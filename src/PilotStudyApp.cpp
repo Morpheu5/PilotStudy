@@ -347,11 +347,19 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 
 		_activePoints[tid] = TouchPoint(tid, position);
 		l.push_back(_activePoints[tid]);
+        
 	}
 
 	switch(_scene) {
 		case TagSelectionScene: {
-			break;
+            for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
+                for(int i = 0; i < _tags.size(); i++) {
+                    if(_tags[i].hit(it->getPos())) {
+                        _tags[i].selected = !_tags[i].selected;
+                    }
+                }
+                break;
+            }
 		}
 		case LoopSelectionScene:
 		case ActionScene: {
