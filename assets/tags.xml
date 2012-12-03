@@ -1,25 +1,65 @@
 <?xml version="1.0" ?>
 <root>
 	<tags>
-		<tag name="happy">
+		<tag name="sleepy">
+			<loop name="lead_1" />
+			<loop name="lead_3" />
+			<loop name="pluck_1" />
+			<loop name="pluck_3" />
 			<loop name="piano_1" />
-			<loop name="piano_2" />
-			<loop name="bass_1" />
-		</tag>
-		<tag name="sad">
-			<loop name="bass_1" />
-			<loop name="bass_2" />
-			<loop name="drums_1" />
-		</tag>
-		<tag name="smooth">
+			<loop name="piano_3" />
+			<loop name="piano_5" />
 			<loop name="drums_1" />
 			<loop name="drums_2" />
-			<loop name="trumpets_1" />
+			<loop name="drums_3" />
+			<loop name="drums_5" />
 		</tag>
-		<tag name="rough">
-			<loop name="trumpets_1" />
-			<loop name="trumpets_2" />
+		<tag name="swift">
+			<loop name="lead_2" />
+			<loop name="lead_4" />
+			<loop name="lead_5" />
+			<loop name="lead_6" />
+			<loop name="lead_7" />
+			<loop name="pluck_2" />
+			<loop name="pluck_4" />
+			<loop name="pluck_5" />
+			<loop name="pluck_6" />
+			<loop name="pluck_7" />
+			<loop name="piano_2" />
+			<loop name="piano_6" />
+			<loop name="drums_4" />
+			<loop name="drums_6" />
+		</tag>
+		<tag name="strange">
+			<loop name="drums_4" />
+			<loop name="drums_6" />
+			<loop name="lead_3" />
+			<loop name="lead_7" />
+			<loop name="pluck_3" />
+			<loop name="pluck_7" />
+			<loop name="piano_4" />
+			<loop name="piano_7" />
+		</tag>
+		<tag name="classic">
+			<loop name="piano_3" />
+			<loop name="pluck_5" />
+			<loop name="lead_5" />
+		</tag>
+		<tag name="dreamy">
 			<loop name="piano_1" />
+			<loop name="piano_3" />
+			<loop name="piano_5" />
+			<loop name="pluck_1" />
+			<loop name="pluck_2" />
+			<loop name="pluck_6" />
+			<loop name="lead_1" />
+			<loop name="lead_2" />
+			<loop name="lead_6" />
+		</tag>
+		<tag name="harmonious">
+			<loop name="piano_3" />
+			<loop name="piano_5" />
+			<loop name="piano_6" />
 		</tag>
 	</tags>
 </root>

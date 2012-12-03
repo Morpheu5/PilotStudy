@@ -19,7 +19,7 @@
 #include "Score.h"
 
 #define FPS 60
-#define LOOPS_LENGTH 2
+#define LOOPS_LENGTH 6.0f
 #define LOOP_SELECTION_CIRCLE_RADIUS 350.0f
 
 using namespace ci;
@@ -297,6 +297,26 @@ void PilotStudyApp::keyDown(KeyEvent event) {
 			exit(0);
 			break;
 		}
+		case 's': {
+			if(_scene == ActionScene) {
+				// Save the song
+				XmlTree songDoc("root", "");
+				XmlTree song("song", "");
+				for(int b = 0; b < 8; b++) {
+					XmlTree bar("bar", "");
+					bar.setAttribute("number", b);
+					std::list<Cell> cells = _score.cellsInBar(b);
+					for(auto it = cells.begin(); it != cells.end(); ++it) {
+						XmlTree loop("loop", "");
+						loop.setAttribute("name", it->loopName());
+						bar.push_back(loop);
+					}
+					song.push_back(bar);
+				}
+				songDoc.push_back(song);
+				songDoc.write(writeFile(getAssetPath("")/"song.xml"));
+			}
+		}
 	}
 }
 
@@ -333,6 +353,34 @@ void PilotStudyApp::mouseUp(MouseEvent event) {
 	l.push_back(_activePoints[0]);
 	_activePoints.erase(0);
 	_cellController.removeTouches(l);
+
+	switch(_scene) {
+		case TagSelectionScene: {
+			break;
+		}
+		case LoopSelectionScene: {
+			std::map<int, Cell> cells = _cellController.cells();
+			TouchPoint t = *(l.begin());
+			PolyLine<Vec2f> path = t.path();
+			Vec2f first = *(path.begin());
+			Vec2f last = *(path.end()-1);
+			if(first.distance(last) < 10.0f) {
+				for(auto cellIt = cells.begin(); cellIt != cells.end(); ++cellIt) {
+					if(cellIt->second.hit(last)) {
+						osc::Message m;
+						m.setAddress("/playclip");
+						m.addStringArg(cellIt->second.loopName());
+						m.setRemoteEndpoint(_hostname, _port);
+						_sender.sendMessage(m);
+					}
+				}
+			}
+			break;
+		}
+		case ActionScene: {
+			break;
+		}
+	}
 }
 
 void PilotStudyApp::mouseMove(MouseEvent event) {

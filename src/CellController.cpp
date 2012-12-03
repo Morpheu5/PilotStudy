@@ -20,10 +20,12 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 	ci::Vec2f p;
 	int i, j, k, n, id = 1;
 
+	int width = 70;
+
 	// Try to keep pools down to two rows tops
 	int cols = std::max(8, (int)ceil(loops.size()/2.0));
-	int borderPadding = (45 + 60 * ((loops.size()-1) / cols));
-	int hDisplacement = floor(60 * (std::min(cols, (int)loops.size()) - 1) * 0.5);
+	int borderPadding = (45 + width * ((loops.size()-1) / cols));
+	int hDisplacement = floor(width * (std::min(cols, (int)loops.size()) - 1) * 0.5);
 
 	_cells.clear();
 
@@ -32,7 +34,7 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 			i = 0;
 			j = 0;
 			for(k = 0; k < loops.size(); k++) {
-				p = Vec2f(app::getWindowWidth() - borderPadding + (60*j), app::getWindowHeight()/2 + hDisplacement - (60*(i % cols)));
+				p = Vec2f(app::getWindowWidth() - borderPadding + (width*j), app::getWindowHeight()/2 + hDisplacement - (width*(i % cols)));
 
 				for(n = 0; n < cols; n++) {
 					c = Cell(p);
@@ -51,7 +53,7 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 			i = 0;
 			j = 0;
 			for(k = 0; k < loops.size(); k++) {
-				p = Vec2f(borderPadding - (60*j), app::getWindowHeight()/2 - hDisplacement + (60*(i % cols)));
+				p = Vec2f(borderPadding - (width*j), app::getWindowHeight()/2 - hDisplacement + (width*(i % cols)));
 				
 				for(n = 0; n < cols; n++) {
 					c = Cell(p);
@@ -70,7 +72,7 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 			i = 0;
 			j = 0;
 			for(k = 0; k < loops.size(); k++) {
-				p = Vec2f(app::getWindowWidth()/2 + hDisplacement - (60 * (i % cols)), borderPadding - (60*j));
+				p = Vec2f(app::getWindowWidth()/2 + hDisplacement - (width * (i % cols)), borderPadding - (width*j));
 				
 				for(n = 0; n < cols; n++) {
 					c = Cell(p);
@@ -89,7 +91,7 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 			i = 0;
 			j = 0;
 			for(k = 0; k < loops.size(); k++) {
-				p = Vec2f(app::getWindowWidth()/2 - hDisplacement + (60 * (i % cols)), app::getWindowHeight() - borderPadding + (60*j));
+				p = Vec2f(app::getWindowWidth()/2 - hDisplacement + (width * (i % cols)), app::getWindowHeight() - borderPadding + (width*j));
 				
 				for(n = 0; n < cols; n++) {
 					c = Cell(p);
