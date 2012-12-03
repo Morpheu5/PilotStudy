@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<song>
+		<bar number="0">
+			<loop name="pluck_4"/>
+			<loop name="drums_6"/>
+		</bar>
+		<bar number="1">
+			<loop name="pluck_3"/>
+			<loop name="drums_4"/>
+		</bar>
+		<bar number="2">
+			<loop name="pluck_7"/>
+			<loop name="drums_6"/>
+		</bar>
+		<bar number="3">
+			<loop name="pluck_4"/>
+			<loop name="drums_4"/>
+		</bar>
+		<bar number="4">
+			<loop name="pluck_4"/>
+			<loop name="drums_6"/>
+		</bar>
+		<bar number="5">
+			<loop name="drums_4"/>
+		</bar>
+		<bar number="6">
+			<loop name="pluck_7"/>
+			<loop name="drums_6"/>
+		</bar>
+		<bar number="7">
+			<loop name="pluck_3"/>
+			<loop name="drums_4"/>
+		</bar>
+	</song>
+</root>
+

@@ -5,6 +5,7 @@
 #include "cinder/cairo/Cairo.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/Rand.h"
+#include "cinder/Filesystem.h"
 
 #include "Cell.h"
 
@@ -16,7 +17,7 @@ Cell::Cell(void) {
 
 Cell::Cell(ci::Vec2f& p) {
 	_position = ci::Vec2f(p);
-	
+
 	_artwork = svg::Doc::create(app::getAssetPath("Cell.svg"));
 	Rectf rect = _artwork->getBoundingBox();
 	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
@@ -28,6 +29,23 @@ Cell::Cell(ci::Vec2f& p) {
 
 Cell::~Cell() {
 	_artwork.reset();
+}
+
+void Cell::loopName(std::string& n) {
+	_loopName = n;
+
+	fs::path fileName = app::getAssetPath(_loopName + ".svg");
+	if(fileName.empty()) {
+		_artwork = svg::Doc::create(app::getAssetPath("Cell.svg"));
+	} else {
+		_artwork = svg::Doc::create(fileName);
+	}
+	Rectf rect = _artwork->getBoundingBox();
+	cairo::SurfaceImage sImg(rect.getWidth(), rect.getHeight(), true);
+	cairo::Context ctx(sImg);
+	ctx.scale(rect.getWidth() / _artwork->getWidth(), rect.getHeight() / _artwork->getHeight());
+	ctx.render(*_artwork);
+	_texture = sImg.getSurface();
 }
 
 void Cell::update() {

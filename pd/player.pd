@@ -21,7 +21,7 @@
 #X msg 70 185 \; pd dsp 1;
 #X obj 340 195 *~ 1;
 #X obj 185 94 print ---;
-#X msg 10 10 send /playclip trumpets_6;
+#X msg 10 10 send /playclip lead_1;
 #X connect 1 0 4 0;
 #X connect 2 0 4 0;
 #X connect 3 0 4 0;

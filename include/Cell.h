@@ -32,6 +32,6 @@ public:
 	void id(const int i) { _id = i; }
 
 	const std::string loopName() const { return _loopName; }
-	void loopName(std::string& n) { _loopName = n; }
+	void loopName(std::string& n);
 };
 
