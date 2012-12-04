@@ -390,19 +390,20 @@ void PilotStudyApp::mouseMove(MouseEvent event) {
 void PilotStudyApp::touchesBegan(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		int tid = it->getId();
-		Vec2f position = it->getPos();
+		TouchEvent::Touch touch = *it;
+		int tid = touch.getId();
+		Vec2f position = touch.getPos();
 
 		_activePoints[tid] = TouchPoint(tid, position);
 		l.push_back(_activePoints[tid]);
-        
 	}
 
 	switch(_scene) {
 		case TagSelectionScene: {
             for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
+				TouchEvent::Touch touch = *it;
                 for(int i = 0; i < _tags.size(); i++) {
-                    if(_tags[i].hit(it->getPos())) {
+                    if(_tags[i].hit(touch.getPos())) {
                         _tags[i].selected = !_tags[i].selected;
                     }
                 }
@@ -420,8 +421,9 @@ void PilotStudyApp::touchesBegan(TouchEvent event) {
 void PilotStudyApp::touchesMoved(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		int tid = it->getId();
-		Vec2f position = it->getPos();
+		TouchEvent::Touch touch = *it;
+		int tid = touch.getId();
+		Vec2f position = touch.getPos();
 
 		_activePoints[tid].addPoint(position);
 		l.push_back(_activePoints[tid]);
@@ -442,7 +444,8 @@ void PilotStudyApp::touchesMoved(TouchEvent event) {
 void PilotStudyApp::touchesEnded(TouchEvent event) {
 	std::list<TouchPoint> l;
 	for(auto it = event.getTouches().begin(); it != event.getTouches().end(); ++it) {
-		int tid = it->getId();
+		TouchEvent::Touch touch = *it;
+		int tid = touch.getId();
 
 		l.push_back(_activePoints[tid]);
 		_activePoints.erase(tid);
@@ -455,15 +458,17 @@ void PilotStudyApp::touchesEnded(TouchEvent event) {
 		case LoopSelectionScene: { // detecting a tap
 			std::map<int, Cell> cells = _cellController.cells();
 			for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
-				PolyLine<Vec2f> path = touchIt->path();
+				TouchPoint touch = *touchIt;
+				PolyLine<Vec2f> path = touch.path();
 				Vec2f first = *(path.begin());
 				Vec2f last = *(path.end()-1);
 				if(first.distance(last) < 10.0f) {
 					for(auto cellIt = cells.begin(); cellIt != cells.end(); ++cellIt) {
-						if(cellIt->second.hit(last)) {
+						Cell cell = cellIt->second;
+						if(cell.hit(last)) {
 							osc::Message m;
 							m.setAddress("/playclip");
-							m.addStringArg(cellIt->second.loopName());
+							m.addStringArg(cell.loopName());
 							m.setRemoteEndpoint(_hostname, _port);
 							_sender.sendMessage(m);
 						}

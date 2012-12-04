@@ -130,12 +130,14 @@ void CellController::init(int players, std::vector<std::string>& loops) {
 
 void CellController::addTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
+		TouchPoint touch = *touchIt;
 		for(auto cellIt = _cells.begin(); cellIt != _cells.end(); ++cellIt) {
-			if(cellIt->second.hit(touchIt->position())) {
-				int tid = touchIt->id();
+			Cell cell = cellIt->second;
+			if(cell.hit(touch.position())) {
+				int tid = touch.id();
 
-				_activeTouches[tid] = TouchPoint(*touchIt);
-				_touchedCells[tid] = cellIt->second.id();
+				_activeTouches[tid] = touch;
+				_touchedCells[tid] = cell.id();
 			}
 		}
 	}
@@ -143,11 +145,12 @@ void CellController::addTouches(std::list<TouchPoint>& l) {
 
 void CellController::updateTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
-		if(_activeTouches.find(touchIt->id()) != _activeTouches.end()) {
-			int tid = touchIt->id();
+		TouchPoint touch = *touchIt;
+		if(_activeTouches.find(touch.id()) != _activeTouches.end()) {
+			int tid = touch.id();
 			int cid = _touchedCells[tid];
-			ci::Vec2f lastMovement = touchIt->lastMovement();
-			ci::Vec2f position = touchIt->position();
+			ci::Vec2f lastMovement = touch.lastMovement();
+			ci::Vec2f position = touch.position();
 
 			_activeTouches[tid].addPoint(position);
 			_cells[cid].moveBy(lastMovement);
@@ -157,7 +160,8 @@ void CellController::updateTouches(std::list<TouchPoint>& l) {
 
 void CellController::removeTouches(std::list<TouchPoint>& l) {
 	for(auto touchIt = l.begin(); touchIt != l.end(); ++touchIt) {
-		int tid = touchIt->id();
+		TouchPoint touch = *touchIt;
+		int tid = touch.id();
 		_activeTouches.erase(tid);
 		_touchedCells.erase(tid);
 	}
@@ -165,12 +169,14 @@ void CellController::removeTouches(std::list<TouchPoint>& l) {
 
 void CellController::update() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->second.update();
+		Cell c = it->second;
+		c.update();
 	}
 }
 
 void CellController::draw() {
 	for(auto it = _cells.begin(); it != _cells.end(); ++it) {
-		it->second.draw();
+		Cell c = it->second;
+		c.draw();
 	}
 }

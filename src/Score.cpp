@@ -65,7 +65,8 @@ void Score::update() {
             }
 
 			for(auto cIt = _cells.begin(); cIt != _cells.end(); ++cIt) {
-				Vec2f p = cIt->second.position() - (app::getWindowSize() - _artwork->getSize())/2;
+				Cell cell = cIt->second;
+				Vec2f p = cell.position() - (app::getWindowSize() - _artwork->getSize())/2;
 				if(n->containsPoint(p)) {
                     if(_playingBar == bar) {
                         n->setStyle(hp);
@@ -73,7 +74,7 @@ void Score::update() {
                         n->setStyle(s);
                     }
                     std::pair<int, int> nId(track, bar);
-                    _activeCells[nId] = cIt->first;
+                    _activeCells[nId] = cell.id();
 				}
 			}
 		}
